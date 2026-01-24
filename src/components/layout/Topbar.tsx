@@ -1,4 +1,4 @@
-import styles from "../../styles/base/Layout.module.scss";
+import styles from "../../styles/base/_layout.module.scss";
 import logo from "../../assets/images/Group.svg";
 import searchIcon from "../../assets/icons/search.png";
 import bellIcon from "../../assets/icons/bell.png";

@@ -1,4 +1,4 @@
-import styles from "../../styles/base/Layout.module.scss";
+import styles from "../../styles/base/_layout.module.scss";
 import briefCaseIcon from '../../assets/icons/briefcase 1.png'
 import caretIcon from "../../assets/icons/np_next.png";
 import usersIcon from '../../assets/icons/user-friends 1.png'
