@@ -1,0 +1,168 @@
+.header {
+  height: 100px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 60px;
+  box-shadow: 3px 0 20px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 1000;
+}
+
+.menuBtn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.left img {
+  width: 145px;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search {
+  display: flex;
+  width: 456px;
+  height: 40px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+
+  &:focus-within {
+    border-color: #39cdcc;
+  }
+
+  input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    padding: 0 16px;
+    font-size: 14px;
+    outline: none;
+
+    &::placeholder {
+      color: #545f7d;
+      opacity: 0.7;
+    }
+  }
+
+  .searchBtn {
+    width: 56px;
+    height: 100%;
+    background: #39cdcc;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    img {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+
+  a {
+    color: #213f7d;
+    font-size: 16px;
+    text-decoration: none;
+  }
+
+  .bell {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+
+    img:first-child {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    span {
+      font-size: 16px;
+      font-weight: 500;
+      color: #213f7d;
+    }
+
+    .caret {
+      width: 12px;
+      height: auto;
+    }
+  }
+}
+
+
+@media (max-width: 768px) {
+  .header {
+    height: 70px;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .menuBtn {
+    display: block;
+  }
+
+  .center {
+    display: none;
+  }
+
+  .right {
+    gap: 16px;
+
+    a {
+      display: none;
+    }
+
+    .profile span,
+    .profile .caret {
+      display: none;
+    }
+  }
+
+  .left img {
+    width: 110px;
+  }
+}
+.menuBtn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+      font-size: 28px; 
+    }
+  }
+}
