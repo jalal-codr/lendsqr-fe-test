@@ -17,6 +17,15 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) {
+      setError("All fields are required");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
     setError("");
     setLoading(true);
 
@@ -48,9 +57,10 @@ const Login = () => {
           <h1>Welcome!</h1>
           <p>Enter details to login.</p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} aria-label="login-form">
             <input
               type="email"
+              required
               placeholder="Email"
               className={styles.input}
               value={email}
@@ -60,6 +70,7 @@ const Login = () => {
             <div className={styles.passwordWrapper}>
               <input
                 type={showPassword ? "text" : "password"}
+                required
                 placeholder="Password"
                 className={styles.input}
                 value={password}
