@@ -2,7 +2,7 @@
 
 A fully responsive admin dashboard for managing users, built with React, TypeScript, and SCSS. This application demonstrates enterprise-level frontend development practices including state management, database integration, and comprehensive testing.
 
-![Lendsqr Dashboard](./src//assets//Union.png)
+![Lendsqr Dashboard](./src/assets/images/group.svg)
 
 ## 🔗 Live Demo
 
