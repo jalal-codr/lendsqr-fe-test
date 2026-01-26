@@ -123,7 +123,7 @@ describe("Login Component", () => {
 
     await waitFor(() => {
       expect(mockSignIn).toHaveBeenCalledWith("user@lendsqr.com", "password123");
-      expect(mockNavigate).toHaveBeenCalledWith("/dashboard");
+      expect(mockNavigate).toHaveBeenCalledWith("/");
     });
   });
 });

@@ -38,7 +38,7 @@ export const getUsers = async (
       dateJoined: user.dateJoined,
       status: user.status,
     })),
-    total: allUsers.length,
+    total: allUsers.length, 
   };
 };
 
