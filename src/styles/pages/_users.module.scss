@@ -1,0 +1,47 @@
+.usersPage {
+  padding: 0px 5%;
+  background-color: #FBFBFB;
+  min-height: 100vh;
+  
+  .pageTitle {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    color: #213F7D;
+    margin-bottom: 40px;
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
+  }
+
+  .statsGrid {
+    display: grid;
+    gap: 26px;
+    margin-bottom: 40px;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: 1100px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .tableSection {
+    margin-top: 40px;
+    width: 100%;
+    
+    @media (max-width: 768px) {
+      margin-top: 20px;
+    }
+  }
+    .contentWrapper {
+    max-width: 1200px; 
+    margin: 0 auto;
+    width: 100%;
+    }
+}
