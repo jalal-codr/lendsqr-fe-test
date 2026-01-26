@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import StatCard from '../../components/ui/StatCard';
 import styles from '../../styles/pages/_users.module.scss';
 import UserTable from '../../components/table/UserTable';
-import SkeletonLoader from '../../components/common/SkeletonLoader';
+import SkeletonLoader from '../../components/ui/SkeletonLoader';
 import Pagination from '../../components/common/Pagination';
 import { getUsers } from './users.service';
 import type { UserSummary } from './users.types';

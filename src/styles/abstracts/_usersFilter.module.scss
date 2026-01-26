@@ -1,0 +1,61 @@
+.filterWrapper {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 270px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.04);
+  z-index: 50;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #545f7d;
+
+  input,
+  select {
+    margin-top: 6px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(33, 63, 125, 0.2);
+    font-size: 14px;
+    outline: none;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+
+  button {
+    width: 48%;
+    height: 40px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+.reset {
+  background: #ffffff;
+  border: 1px solid #545f7d;
+  color: #545f7d;
+}
+
+.filter {
+  background: #39cdcc;
+  border: none;
+  color: #ffffff;
+}
