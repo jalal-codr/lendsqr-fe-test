@@ -16,6 +16,12 @@ export interface UserSummary {
 
 export interface UserDetails {
   id: string;
+  organization: string;
+  username: string; 
+  email: string;
+  phoneNumber: string;
+  dateJoined: string;
+  status: UserStatus;
 
   profile: {
     firstName: string;
@@ -24,16 +30,16 @@ export interface UserDetails {
     phoneNumber: string;
     email: string;
     bvn: string;
-    gender: "Male" | "Female";
+    gender: string;
     maritalStatus: string;
-    children: string;
+    children: number;
     residence: string;
   };
 
   account: {
-    tier: 1 | 2 | 3;
+    tier: number;
     balance: number;
-    accountNumber: string;
+    accountNumber: number;
     bankName: string;
   };
 
@@ -56,19 +62,19 @@ export interface UserDetails {
     instagram: string;
   };
 
-  guarantors: Array<{
+  guarantors: {
     fullName: string;
     phoneNumber: string;
     email: string;
     relationship: string;
-  }>;
-
-  status: UserStatus;
-  dateJoined: string;
-  organization: string;
+  };
 }
-
 export interface GetUsersParams {
   page: number;
   limit: number;
-};
+}
+
+export interface PaginatedUsersResponse {
+  data: UserDetails[];
+  total: number;
+}

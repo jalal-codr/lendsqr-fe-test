@@ -7,25 +7,17 @@ import EyeIcon from '../../assets/icons/np_view.png';
 import BlacklistIcon from '../../assets/icons/np_delete-friend.png';
 import ActivateIcon from '../../assets/icons/np_user.png';
 import UsersFilter from '../../components/common/UsersFilter';
-import type{ UsersFilterValues } from '../../components/common/UsersFilter';
+import type { UsersFilterValues } from '../../components/common/UsersFilter';
+import { useUserDetails } from '../../hooks/useLocalStorage'; 
+import type { UserDetails } from '../../features/users/users.types';
 
-interface User {
-  id: string;
-  organization: string;
-  username: string;
-  email: string;
-  phoneNumber: string;
-  dateJoined: string;
-  status: 'Inactive' | 'Pending' | 'Blacklisted' | 'Active';
-}
-
-const UserTable: React.FC<{ users: User[] }> = ({ users }) => {
+const UserTable: React.FC<{ users: UserDetails[] }> = ({ users }) => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [showFilter, setShowFilter] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { saveUserDetails } = useUserDetails();
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -36,8 +28,8 @@ const UserTable: React.FC<{ users: User[] }> = ({ users }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleViewDetails = (user: User) => {
-    localStorage.setItem('selectedUserSummary', JSON.stringify(user));
+  const handleViewDetails = (user: UserDetails) => {
+    saveUserDetails(user);
     navigate(`/users/${user.id}`);
   };
 
@@ -47,13 +39,9 @@ const UserTable: React.FC<{ users: User[] }> = ({ users }) => {
   };
 
   const handleApplyFilter = (filters: UsersFilterValues) => {
-  console.log(filters);
-  // you’ll apply filtering in the parent later
-};
-
-const handleResetFilter = () => {
-  console.log('reset');
-};
+    console.log(filters);
+    setShowFilter(false);
+  };
 
   return (
     <div className={styles.tableWrapper}>
@@ -61,7 +49,7 @@ const handleResetFilter = () => {
         <thead>
           <tr>
             {['Organization', 'Username', 'Email', 'Phone Number', 'Date Joined', 'Status'].map((header) => (
-              <th key={header}>
+              <th key={header} style={{ position: 'relative' }}>
                 <div className={styles.headerContent}>
                   {header} 
                   <img
@@ -71,10 +59,10 @@ const handleResetFilter = () => {
                     onClick={() => setShowFilter((prev) => !prev)}
                   />
                 </div>
-                {showFilter && (
+                {showFilter && header === 'Organization' && ( 
                     <UsersFilter
                       onApply={handleApplyFilter}
-                      onReset={handleResetFilter}
+                      onReset={() => console.log('reset')}
                       onClose={() => setShowFilter(false)}
                     />
                   )}
@@ -87,9 +75,9 @@ const handleResetFilter = () => {
           {users.map((user) => (
             <tr key={user.id}>
               <td>{user.organization}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{user.phoneNumber}</td>
+              <td>{user.profile.username}</td>
+              <td>{user.profile.email}</td>
+              <td>{user.profile.phoneNumber}</td>
               <td>{user.dateJoined}</td>
               <td>
                 <span className={`${styles.statusBadge} ${styles[user.status.toLowerCase()]}`}>
@@ -104,13 +92,13 @@ const handleResetFilter = () => {
                 {activeMenu === user.id && (
                   <div className={styles.popoverMenu} ref={menuRef}>
                     <button onClick={() => handleViewDetails(user)}>
-                      <img src={EyeIcon} alt="" /> View Details
+                      <img src={EyeIcon} alt="view" /> View Details
                     </button>
                     <button>
-                      <img src={BlacklistIcon} alt="" /> Blacklist User
+                      <img src={BlacklistIcon} alt="blacklist" /> Blacklist User
                     </button>
                     <button>
-                      <img src={ActivateIcon} alt="" /> Activate User
+                      <img src={ActivateIcon} alt="activate" /> Activate User
                     </button>
                   </div>
                 )}

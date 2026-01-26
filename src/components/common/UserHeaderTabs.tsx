@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../../styles/pages/_user-details.module.scss';
-
 import avatarIcon from '../../assets/icons/avatar.png';
 import star from '../../assets/icons/np_star.png';
 import starOutline from '../../assets/icons/np_star_1.png';
+import type{ UserDetails } from '../../features/users/users.types';
 
 const TABS = [
   'General Details',
@@ -16,8 +16,25 @@ const TABS = [
 
 type UserTab = (typeof TABS)[number];
 
-const UserHeaderTabs: React.FC = () => {
+// Define the Props interface
+interface UserHeaderTabsProps {
+  user: UserDetails;
+}
+
+const UserHeaderTabs: React.FC<UserHeaderTabsProps> = ({ user }) => {
   const [activeTab, setActiveTab] = useState<UserTab>('General Details');
+
+  // Helper to render stars based on account.tier (1, 2, or 3)
+  const renderStars = () => {
+    const tier = user.account.tier || 1;
+    return [1, 2, 3].map((index) => (
+      <img 
+        key={index} 
+        src={index <= tier ? star : starOutline} 
+        alt={index <= tier ? "Filled star" : "Empty star"} 
+      />
+    ));
+  };
 
   return (
     <div className={styles.userHeaderTabs}>
@@ -25,12 +42,13 @@ const UserHeaderTabs: React.FC = () => {
       <div className={styles.userHeader}>
         <div className={styles.profile}>
           <div className={styles.avatar}>
-            <img src={avatarIcon} alt="User avatar" />
+            {/* Using a fallback icon if profile image doesn't exist */}
+            <img src={avatarIcon} alt={`${user.profile.firstName} avatar`} />
           </div>
 
           <div>
-            <h2>Grace Effiom</h2>
-            <p>LSQF587g90</p>
+            <h2>{`${user.profile.firstName} ${user.profile.lastName}`}</h2>
+            <p>{user.id.split('-')[0].toUpperCase() /* Shortened ID for display */}</p>
           </div>
         </div>
 
@@ -39,17 +57,15 @@ const UserHeaderTabs: React.FC = () => {
         <div className={styles.tier}>
           <span>User’s Tier</span>
           <div>
-            <img src={star} alt="Filled star" />
-            <img src={starOutline} alt="Empty star" />
-            <img src={starOutline} alt="Empty star" />
+            {renderStars()}
           </div>
         </div>
 
         <div className={styles.divider} />
 
         <div className={styles.balance}>
-          <h3>₦200,000.00</h3>
-          <p>9912345678 / Providus Bank</p>
+          <h3>₦{user.account.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</h3>
+          <p>{user.account.accountNumber} / {user.account.bankName}</p>
         </div>
       </div>
 

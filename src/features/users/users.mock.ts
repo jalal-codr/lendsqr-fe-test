@@ -1,6 +1,6 @@
 import type { UserDetails } from "./users.types";
 
-const MOCKAROO_URL = "https://my.api.mockaroo.com/users.json?key=8b6ea000";
+const MOCKAROO_URL = "https://my.api.mockaroo.com/users.json?key=051a0280";
 
 /**
  * Fetches 500 users from the Mockaroo endpoint.

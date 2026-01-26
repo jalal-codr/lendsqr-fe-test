@@ -2,8 +2,33 @@ import styles from '../../styles/pages/_user-details.module.scss';
 import { Link } from 'react-router-dom';
 import InfoSection from '../../components/common/InfoSection';
 import UserHeaderTabs from '../../components/common/UserHeaderTabs';
+import { useUserDetails } from '../../hooks/useLocalStorage';
 
 const UserDetails = () => {
+  const { selectedUser } = useUserDetails();
+
+  
+  if (!selectedUser) {
+    return (
+      <div className={styles.wrapper}>
+        <Link to="/users" className={styles.backLink}>
+          ← Back to Users
+        </Link>
+        <div className={styles.detailsCard}>
+          <p>No user selected. Please select a user from the users list.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const monthlyIncome = selectedUser.education?.monthlyIncome
+    ? `₦${selectedUser.education.monthlyIncome.min.toLocaleString()} - ₦${selectedUser.education.monthlyIncome.max.toLocaleString()}`
+    : 'N/A';
+
+  const loanRepayment = selectedUser.education?.loanRepayment
+    ? `₦${selectedUser.education.loanRepayment.toLocaleString()}`
+    : 'N/A';
+
   return (
     <div className={styles.wrapper}>
       <Link to="/users" className={styles.backLink}>
@@ -18,61 +43,53 @@ const UserDetails = () => {
           <button className={styles.activate}>Activate User</button>
         </div>
       </div>
-      <UserHeaderTabs/>
+      
+      <UserHeaderTabs user={selectedUser} />
 
       <div className={styles.detailsCard}>
         <InfoSection
           title="Personal Information"
           items={[
-            ['FULL NAME', 'Grace Effiom'],
-            ['PHONE NUMBER', '07060780922'],
-            ['EMAIL ADDRESS', 'grace@gmail.com'],
-            ['BVN', '07060780922'],
-            ['GENDER', 'Female'],
-            ['MARITAL STATUS', 'Single'],
-            ['CHILDREN', 'None'],
-            ['TYPE OF RESIDENCE', "Parent’s Apartment"],
+            ['FULL NAME', `${selectedUser.profile.firstName} ${selectedUser.profile.lastName}`],
+            ['PHONE NUMBER', selectedUser.profile.phoneNumber || 'N/A'],
+            ['EMAIL ADDRESS', selectedUser.profile.email || 'N/A'],
+            ['BVN', selectedUser.profile.bvn || 'N/A'],
+            ['GENDER', selectedUser.profile.gender || 'N/A'],
+            ['MARITAL STATUS', selectedUser.profile.maritalStatus || 'N/A'],
+            ['CHILDREN', selectedUser.profile.children?.toString() || 'None'],
+            ['TYPE OF RESIDENCE', selectedUser.profile.residence || 'N/A'],
           ]}
         />
 
         <InfoSection
           title="Education and Employment"
           items={[
-            ['LEVEL OF EDUCATION', 'B.Sc'],
-            ['EMPLOYMENT STATUS', 'Employed'],
-            ['SECTOR OF EMPLOYMENT', 'FinTech'],
-            ['DURATION OF EMPLOYMENT', '2 years'],
-            ['OFFICE EMAIL', 'grace@lendsqr.com'],
-            ['MONTHLY INCOME', '₦200,000.00 - ₦400,000.00'],
-            ['LOAN REPAYMENT', '40,000'],
+            ['LEVEL OF EDUCATION', selectedUser.education?.level || 'N/A'],
+            ['EMPLOYMENT STATUS', selectedUser.education?.employmentStatus || 'N/A'],
+            ['SECTOR OF EMPLOYMENT', selectedUser.education?.sector || 'N/A'],
+            ['DURATION OF EMPLOYMENT', selectedUser.education?.duration || 'N/A'],
+            ['OFFICE EMAIL', selectedUser.education?.officeEmail || 'N/A'],
+            ['MONTHLY INCOME', monthlyIncome],
+            ['LOAN REPAYMENT', loanRepayment],
           ]}
         />
 
         <InfoSection
           title="Socials"
           items={[
-            ['TWITTER', '@grace_effiom'],
-            ['FACEBOOK', 'Grace Effiom'],
-            ['INSTAGRAM', '@grace_effiom'],
+            ['TWITTER', selectedUser.socials?.twitter ? `@${selectedUser.socials.twitter}` : 'N/A'],
+            ['FACEBOOK', selectedUser.socials?.facebook || 'N/A'],
+            ['INSTAGRAM', selectedUser.socials?.instagram ? `@${selectedUser.socials.instagram}` : 'N/A'],
           ]}
         />
 
         <InfoSection
           title="Guarantor"
           items={[
-            ['FULL NAME', 'Debby Ogana'],
-            ['PHONE NUMBER', '07060780922'],
-            ['EMAIL ADDRESS', 'debby@gmail.com'],
-            ['RELATIONSHIP', 'Sister'],
-          ]}
-        />
-
-        <InfoSection
-          items={[
-            ['FULL NAME', 'Debby Ogana'],
-            ['PHONE NUMBER', '07060780922'],
-            ['EMAIL ADDRESS', 'debby@gmail.com'],
-            ['RELATIONSHIP', 'Sister'],
+            ['FULL NAME', selectedUser.guarantors?.fullName || 'N/A'],
+            ['PHONE NUMBER', selectedUser.guarantors?.phoneNumber || 'N/A'],
+            ['EMAIL ADDRESS', selectedUser.guarantors?.email || 'N/A'],
+            ['RELATIONSHIP', selectedUser.guarantors?.relationship || 'N/A'],
           ]}
         />
       </div>

@@ -1,55 +1,49 @@
+import { db } from "../../utils/db";
 import { fetchUsers } from "./users.mock";
 import type {
   UserDetails,
-  UserSummary,
   GetUsersParams,
 } from "./users.types";
 
-const simulateDelay = (ms = 600) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+let hasFetchedInMemory = false;
 
-/**
- * Get paginated users from the Mockaroo API
- */
 export const getUsers = async (
   params: GetUsersParams
 ): Promise<{
-  data: UserSummary[];
+  data: UserDetails[]; 
   total: number;
 }> => {
-  const allUsers = await fetchUsers();
+  const { page = 1, limit = 10 } = params;
 
-  const {
-    page = 1,
-    limit = 10, // Default page size
-  } = params;
+  const localCount = await db.users.count();
+
+  if (localCount === 0 || !hasFetchedInMemory) {
+    const allUsers = await fetchUsers(); 
+
+    await db.transaction('rw', db.users, async () => {
+      await db.users.clear();
+      await db.users.bulkAdd(allUsers);
+    });
+
+    hasFetchedInMemory = true;
+  }
+
   const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
 
-  const paginatedUsers = allUsers.slice(startIndex, endIndex);
+  const paginatedUsers = await db.users
+    .offset(startIndex)
+    .limit(limit)
+    .toArray() as UserDetails[];
+
+  const total = await db.users.count();
 
   return {
-    data: paginatedUsers.map((user) => ({
-      id: user.id,
-      organization: user.organization,
-      username: user.profile.username,
-      email: user.profile.email,
-      phoneNumber: user.profile.phoneNumber,
-      dateJoined: user.dateJoined,
-      status: user.status,
-    })),
-    total: allUsers.length, 
+    data: paginatedUsers, 
+    total,
   };
 };
 
-/**
- * Get single user details from the Mockaroo API
- */
-export const getUserById = async (
-  id: string
-): Promise<UserDetails | null> => {
-  const allUsers = await fetchUsers();
-  await simulateDelay();
-
-  return allUsers.find((u) => u.id === id) || null;
+export const getUserById = async (id: string): Promise<UserDetails | null> => {
+  const user = await db.users.get(id) as UserDetails | undefined;
+  return user || null;
 };

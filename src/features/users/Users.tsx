@@ -5,7 +5,7 @@ import UserTable from '../../components/table/UserTable';
 import SkeletonLoader from '../../components/ui/SkeletonLoader';
 import Pagination from '../../components/common/Pagination';
 import { getUsers } from './users.service';
-import type { UserSummary } from './users.types';
+import type { UserDetails } from './users.types';
 
 
 import UsersIcon from '../../assets/icons/usersStatIcon.png';
@@ -35,7 +35,7 @@ const TableSkeleton = () => (
 );
 
 const Users = () => {
-  const [users, setUsers] = useState<UserSummary[]>([]);
+  const [users, setUsers] = useState<UserDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
