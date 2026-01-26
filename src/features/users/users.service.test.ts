@@ -12,7 +12,7 @@ vi.mock("./users.mock", () => ({
 describe("Users Service", () => {
   beforeEach(async () => {
     vi.clearAllMocks();
-    await db.users.clear(); // Resets IndexedDB state
+    await db.users.clear(); 
   });
 
   const createMockUser = (id: string, index: number): UserDetails => ({
@@ -21,7 +21,7 @@ describe("Users Service", () => {
     username: `user_${index}`,
     email: `user${index}@test.com`,
     phoneNumber: `070${index}`,
-    dateJoined: "2020-05-15T10:00:00Z",
+    dateJoined: new Date(2020, 0, index).toISOString(),
     status: "Active",
     profile: {
       firstName: "Test",
@@ -64,7 +64,6 @@ describe("Users Service", () => {
   });
 
   it("should correctly paginate and map raw user data", async () => {
-    // Generate 15 distinct users
     const mockRawData = Array.from({ length: 15 }, (_, i) => 
       createMockUser((i + 1).toString(), i + 1)
     );
@@ -72,22 +71,18 @@ describe("Users Service", () => {
     vi.mocked(fetchUsers).mockResolvedValue(mockRawData);
 
     const result = await getUsers({ page: 2, limit: 5 });
-    
-    // Page 1: IDs 1-5 | Page 2: IDs 6-10
+ 
     expect(result.data.length).toBe(5);
-    expect(result.data[0].id).toBe("6"); 
+    expect(result.data[0].id).toBe("10");
     expect(result.total).toBe(15);
   });
 
   it("should cache data and not re-fetch if DB is populated", async () => {
     const singleUser = [createMockUser("1", 1)];
     vi.mocked(fetchUsers).mockResolvedValue(singleUser);
-
-    // Initial load
     await getUsers({ page: 1, limit: 10 });
     expect(fetchUsers).toHaveBeenCalledTimes(1);
 
-    // Subsequent load - should skip fetchUsers
     await getUsers({ page: 1, limit: 10 });
     expect(fetchUsers).toHaveBeenCalledTimes(1); 
   });

@@ -6,7 +6,7 @@ import SkeletonLoader from '../../components/ui/SkeletonLoader';
 import Pagination from '../../components/common/Pagination';
 import { getUsers } from './users.service';
 import type { UserDetails } from './users.types';
-import type { UsersFilterValues } from '../../components/common/UsersFilter'; // Import filter type
+import type { UsersFilterValues } from '../../components/common/UsersFilter'; 
 
 import UsersIcon from '../../assets/icons/usersStatIcon.png';
 import ActiveUsersIcon from '../../assets/icons/usersActivityIcon.png';

@@ -122,11 +122,10 @@ describe("UserDetails Page", () => {
     expect(screen.getByText("₦100,000 - ₦200,000")).toBeInTheDocument();
     expect(screen.getByText("₦20,000")).toBeInTheDocument();
 
-    // Socials - use getAllByText since @grace_effiong appears in both Twitter and Instagram
-    const socialHandles = screen.getAllByText("@grace_effiong");
-    expect(socialHandles.length).toBe(2); // Twitter and Instagram
 
-    // Guarantor
+    const socialHandles = screen.getAllByText("@grace_effiong");
+    expect(socialHandles.length).toBe(2); 
+
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("08012345678")).toBeInTheDocument();
     expect(screen.getByText("john@test.com")).toBeInTheDocument();
@@ -157,7 +156,6 @@ it("should handle missing optional fields gracefully", () => {
 
   renderWithRouter(<UserDetails />);
 
-  // Should show N/A for missing fields
   const naTags = screen.getAllByText("N/A");
   expect(naTags.length).toBeGreaterThan(0);
 });
@@ -184,7 +182,7 @@ describe("UserHeaderTabs Component", () => {
     render(<UserHeaderTabs user={mockUser} />);
 
     expect(screen.getByText("Grace Effiong")).toBeInTheDocument();
-    expect(screen.getByText("123E4567")).toBeInTheDocument(); // Shortened ID
+    expect(screen.getByText("123E4567")).toBeInTheDocument(); 
     expect(screen.getByText("₦200,000.50")).toBeInTheDocument();
     expect(screen.getByText("9876543210 / Providus Bank")).toBeInTheDocument();
   });
@@ -195,7 +193,6 @@ describe("UserHeaderTabs Component", () => {
     const stars = screen.getAllByAltText(/star/i);
     expect(stars).toHaveLength(3);
 
-    // Tier 2 should have 2 filled stars and 1 empty star
     const filledStars = screen.getAllByAltText("Filled star");
     const emptyStars = screen.getAllByAltText("Empty star");
     expect(filledStars).toHaveLength(2);
@@ -219,14 +216,11 @@ describe("UserHeaderTabs Component", () => {
     const generalTab = screen.getByText("General Details");
     const documentsTab = screen.getByText("Documents");
 
-    // General Details should be active by default
     expect(generalTab.className).toContain("activeTab");
     expect(documentsTab.className).not.toContain("activeTab");
 
-    // Click Documents tab
     await user.click(documentsTab);
 
-    // Documents should now be active
     expect(documentsTab.className).toContain("activeTab");
     expect(generalTab.className).not.toContain("activeTab");
   });
@@ -295,13 +289,11 @@ describe("InfoSection Component", () => {
 
     const { container } = render(<InfoSection title="Test Section" items={items} />);
 
-    // Use data-testid or check for all items being rendered
     expect(screen.getByText("ITEM 1")).toBeInTheDocument();
     expect(screen.getByText("ITEM 2")).toBeInTheDocument();
     expect(screen.getByText("ITEM 3")).toBeInTheDocument();
     expect(screen.getByText("ITEM 4")).toBeInTheDocument();
-    
-    // Alternative: count the items directly
+
     const itemElements = container.querySelectorAll('[class*="item"]');
     expect(itemElements.length).toBe(4);
   });

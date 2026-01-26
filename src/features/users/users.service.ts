@@ -67,16 +67,11 @@ export const getUsers = async (
   const total = await collection.count();
   const startIndex = (page - 1) * limit;
   
-  // Sort by ID numerically to ensure correct ordering
+
   const paginatedUsers = await collection
-    .sortBy('id')
+    .sortBy('dateJoined')
     .then(sorted => {
-      // Sort numerically if IDs are numeric strings
-      sorted.sort((a, b) => {
-        const numA = parseInt(a.id);
-        const numB = parseInt(b.id);
-        return numA - numB;
-      });
+      sorted.reverse();
       return sorted.slice(startIndex, startIndex + limit);
     }) as UserDetails[];
 
