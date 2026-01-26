@@ -6,7 +6,7 @@ import SkeletonLoader from '../../components/ui/SkeletonLoader';
 import Pagination from '../../components/common/Pagination';
 import { getUsers } from './users.service';
 import type { UserDetails } from './users.types';
-
+import type { UsersFilterValues } from '../../components/common/UsersFilter'; // Import filter type
 
 import UsersIcon from '../../assets/icons/usersStatIcon.png';
 import ActiveUsersIcon from '../../assets/icons/usersActivityIcon.png';
@@ -19,7 +19,6 @@ const statsData = [
   { title: "Users with Loans", value: "12,453", icon: LoansIcon },
   { title: "Users with Savings", value: "102,453", icon: SavingsIcon },
 ];
-
 
 const TableSkeleton = () => (
   <div className="flex flex-col gap-6 w-full h-full" style={{ minHeight: '60vh' }}>
@@ -43,6 +42,8 @@ const Users = () => {
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
 
+  const [filters, setFilters] = useState<UsersFilterValues>({});
+
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
@@ -50,6 +51,7 @@ const Users = () => {
         const res = await getUsers({
           page: currentPage,
           limit: pageSize,
+          ...filters,
         });
 
         setUsers(res.data);
@@ -62,11 +64,20 @@ const Users = () => {
     };
 
     fetchUsersData();
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, filters]);
+
+  const handleApplyFilter = (newFilters: UsersFilterValues) => {
+    setCurrentPage(1);
+    setFilters(newFilters);
+  };
+
+  const handleResetFilter = () => {
+    setCurrentPage(1);
+    setFilters({});
+  };
 
   const totalPages = Math.ceil(totalItems / pageSize);
 
- 
   if (error) {
     return (
       <div className={styles.usersPage}>
@@ -76,7 +87,6 @@ const Users = () => {
       </div>
     );
   }
-  if (loading) return <TableSkeleton/>
 
   return (
     <div className={styles.usersPage}>
@@ -87,8 +97,15 @@ const Users = () => {
         ))}
       </div>
       <div className={styles.tableSection}>
+        {loading ? (
+          <TableSkeleton />
+        ) : (
           <>
-            <UserTable users={users} />
+            <UserTable 
+              users={users} 
+              onApplyFilter={handleApplyFilter}
+              onResetFilter={handleResetFilter}
+            />
             
             <div className={styles.paginationSection}>
               <Pagination
@@ -104,6 +121,7 @@ const Users = () => {
               />
             </div>
           </>
+        )}
       </div>
     </div>
   );

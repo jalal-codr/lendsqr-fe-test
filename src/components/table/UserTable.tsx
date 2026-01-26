@@ -10,8 +10,15 @@ import UsersFilter from '../../components/common/UsersFilter';
 import type { UsersFilterValues } from '../../components/common/UsersFilter';
 import { useUserDetails } from '../../hooks/useLocalStorage'; 
 import type { UserDetails } from '../../features/users/users.types';
+import { formatUserDate } from '../../utils/formatDate';
 
-const UserTable: React.FC<{ users: UserDetails[] }> = ({ users }) => {
+interface UserTableProps {
+  users: UserDetails[];
+  onApplyFilter: (values: UsersFilterValues) => void;
+  onResetFilter: () => void;
+}
+
+const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilter }) => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [showFilter, setShowFilter] = useState(false);
@@ -38,18 +45,13 @@ const UserTable: React.FC<{ users: UserDetails[] }> = ({ users }) => {
     setActiveMenu(activeMenu === userId ? null : userId);
   };
 
-  const handleApplyFilter = (filters: UsersFilterValues) => {
-    console.log(filters);
-    setShowFilter(false);
-  };
-
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.table}>
         <thead>
           <tr>
             {['Organization', 'Username', 'Email', 'Phone Number', 'Date Joined', 'Status'].map((header) => (
-              <th key={header} style={{ position: 'relative' }}>
+              <th key={header}>
                 <div className={styles.headerContent}>
                   {header} 
                   <img
@@ -59,12 +61,22 @@ const UserTable: React.FC<{ users: UserDetails[] }> = ({ users }) => {
                     onClick={() => setShowFilter((prev) => !prev)}
                   />
                 </div>
+                
+                {/* Anchor filter to Organization column */}
                 {showFilter && header === 'Organization' && ( 
-                    <UsersFilter
-                      onApply={handleApplyFilter}
-                      onReset={() => console.log('reset')}
-                      onClose={() => setShowFilter(false)}
-                    />
+                    <div className={styles.filterContainer}>
+                        <UsersFilter
+                        onApply={(values) => {
+                            onApplyFilter(values);
+                            setShowFilter(false);
+                        }}
+                        onReset={() => {
+                            onResetFilter();
+                            setShowFilter(false);
+                        }}
+                        onClose={() => setShowFilter(false)}
+                        />
+                    </div>
                   )}
               </th>
             ))}
@@ -72,39 +84,56 @@ const UserTable: React.FC<{ users: UserDetails[] }> = ({ users }) => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.organization}</td>
-              <td>{user.profile.username}</td>
-              <td>{user.profile.email}</td>
-              <td>{user.profile.phoneNumber}</td>
-              <td>{user.dateJoined}</td>
-              <td>
-                <span className={`${styles.statusBadge} ${styles[user.status.toLowerCase()]}`}>
-                  {user.status}
-                </span>
-              </td>
-              <td className={styles.actionCell}>
-                <button className={styles.actionBtn} onClick={(e) => toggleMenu(e, user.id)}>
-                  <img src={MoreVertIcon} alt="actions" />
-                </button>
+          {users.length > 0 ? (
+            users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.organization}</td>
+                <td>{user.profile.username}</td>
+                <td>{user.profile.email}</td>
+                <td>{user.profile.phoneNumber}</td>
+                <td>{formatUserDate(user.dateJoined)}</td>
+                <td>
+                  <span className={`${styles.statusBadge} ${styles[user.status.toLowerCase()]}`}>
+                    {user.status}
+                  </span>
+                </td>
+                <td className={styles.actionCell}>
+                  <button className={styles.actionBtn} onClick={(e) => toggleMenu(e, user.id)}>
+                    <img src={MoreVertIcon} alt="actions" />
+                  </button>
 
-                {activeMenu === user.id && (
-                  <div className={styles.popoverMenu} ref={menuRef}>
-                    <button onClick={() => handleViewDetails(user)}>
-                      <img src={EyeIcon} alt="view" /> View Details
-                    </button>
-                    <button>
-                      <img src={BlacklistIcon} alt="blacklist" /> Blacklist User
-                    </button>
-                    <button>
-                      <img src={ActivateIcon} alt="activate" /> Activate User
-                    </button>
-                  </div>
-                )}
+                  {activeMenu === user.id && (
+                    <div className={styles.popoverMenu} ref={menuRef}>
+                      <button onClick={() => handleViewDetails(user)}>
+                        <img src={EyeIcon} alt="view" /> View Details
+                      </button>
+                      <button>
+                        <img src={BlacklistIcon} alt="blacklist" /> Blacklist User
+                      </button>
+                      <button>
+                        <img src={ActivateIcon} alt="activate" /> Activate User
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))
+          ) : (
+            /* EMPTY STATE ROW */
+            <tr>
+              <td colSpan={7} className={styles.noDataCell}>
+                <div className={styles.noDataWrapper}>
+                  <p>No records found matching your filters.</p>
+                  <button 
+                    onClick={onResetFilter} 
+                    className={styles.resetSearchBtn}
+                  >
+                    Reset Filter
+                  </button>
+                </div>
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

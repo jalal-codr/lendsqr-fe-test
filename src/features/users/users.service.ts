@@ -4,16 +4,26 @@ import type {
   UserDetails,
   GetUsersParams,
 } from "./users.types";
+import type { UsersFilterValues } from "../../components/common/UsersFilter";
 
 let hasFetchedInMemory = false;
 
 export const getUsers = async (
-  params: GetUsersParams
+  params: GetUsersParams & UsersFilterValues
 ): Promise<{
   data: UserDetails[]; 
   total: number;
 }> => {
-  const { page = 1, limit = 10 } = params;
+  const { 
+    page = 1, 
+    limit = 10, 
+    organization, 
+    username, 
+    email, 
+    date, 
+    phoneNumber, 
+    status 
+  } = params;
 
   const localCount = await db.users.count();
 
@@ -28,14 +38,38 @@ export const getUsers = async (
     hasFetchedInMemory = true;
   }
 
-  const startIndex = (page - 1) * limit;
+  let collection = db.users.toCollection();
 
-  const paginatedUsers = await db.users
+  const hasFilters = organization || username || email || date || phoneNumber || status;
+
+  if (hasFilters) {
+    collection = db.users.filter((user) => {
+      const matchOrg = !organization || user.organization === organization;
+      
+      const matchUsername = !username || 
+        user.profile.username.toLowerCase().includes(username.toLowerCase());
+        
+      const matchEmail = !email || 
+        user.profile.email.toLowerCase().includes(email.toLowerCase());
+        
+      const matchPhone = !phoneNumber || 
+        user.profile.phoneNumber.includes(phoneNumber);
+        
+      const matchStatus = !status || user.status === status;
+
+      const storedDate = user.dateJoined ? new Date(user.dateJoined).toISOString().split('T')[0] : "";
+      const matchDate = !date || storedDate === date;
+
+      return matchOrg && matchUsername && matchEmail && matchPhone && matchStatus && matchDate;
+    });
+  }
+
+  const total = await collection.count();
+  const startIndex = (page - 1) * limit;
+  const paginatedUsers = await collection
     .offset(startIndex)
     .limit(limit)
     .toArray() as UserDetails[];
-
-  const total = await db.users.count();
 
   return {
     data: paginatedUsers, 

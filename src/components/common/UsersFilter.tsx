@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react';
 import styles from '../../styles/abstracts/_usersFilter.module.scss';
 
 export interface UsersFilterValues {
@@ -16,24 +17,38 @@ interface UsersFilterProps {
 }
 
 const UsersFilter = ({ onApply, onReset, onClose }: UsersFilterProps) => {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
     const values = Object.fromEntries(formData.entries()) as UsersFilterValues;
-
     onApply(values);
-    onClose();
+  };
+
+  const handleResetClick = () => {
+    if (formRef.current) formRef.current.reset();
+    onReset();
   };
 
   return (
     <div className={styles.filterWrapper}>
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <label>
           Organization
           <select name="organization">
             <option value="">Select</option>
             <option value="Lendsqr">Lendsqr</option>
+            <option value="Iridere">Iridere</option>
+            <option value="Lexicon">Lexicon</option>
           </select>
         </label>
 
@@ -69,10 +84,17 @@ const UsersFilter = ({ onApply, onReset, onClose }: UsersFilterProps) => {
         </label>
 
         <div className={styles.actions}>
-          <button type="button" onClick={onReset} className={styles.reset}>
+          <button 
+            type="button" 
+            onClick={handleResetClick} 
+            className={styles.reset}
+          >
             Reset
           </button>
-          <button type="submit" className={styles.filter}>
+          <button 
+            type="submit" 
+            className={styles.filter}
+          >
             Filter
           </button>
         </div>
