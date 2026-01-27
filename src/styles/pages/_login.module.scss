@@ -1,12 +1,10 @@
 @use "sass:color";
 
-
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
   background: #ffffff;
-  font-family: "Work Sans", sans-serif; 
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
@@ -26,16 +24,14 @@
   }
 
   @media (max-width: 900px) {
-    padding: 40px 0 0 0;
-    align-items: flex-start;
-    padding-left: 24px;
+    display: none;
   }
 }
 
 .logo {
   width: 173.76px;
   height: 36px;
-  margin-bottom: 260px;
+  margin-bottom: 200px;
   
   @media (max-height: 800px) {
     margin-bottom: 80px; 
@@ -46,14 +42,6 @@
   width: 100%;
   max-width: 600px;
   height: auto;
-  margin-top: 80px;
-}
-
-/* Hide illustration on mobile */
-@media (max-width: 900px) {
-  .illustration {
-    display: none;
-  }
 }
 
 /* RIGHT SECTION */
@@ -66,8 +54,6 @@
 
   @media (max-width: 900px) {
     box-shadow: none;
-    align-items: center;
-    justify-content: center;
   }
 }
 
@@ -168,6 +154,6 @@
   transition: background 0.3s ease;
 
   &:hover {
-      background: color.adjust(#39cdcc, $lightness: -5%);
+    background: color.adjust(#39cdcc, $lightness: -5%);
   }
 }

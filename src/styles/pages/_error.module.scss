@@ -5,18 +5,14 @@
   justify-content: center;
   height: 100vh;
   text-align: center;
-  font-family: 'Work Sans', sans-serif;
   padding: 20px;
 
   h1 {
-    font-size: 120px;
     margin: 0;
     color: #213f7d;
-    font-weight: 700;
   }
 
   h2 {
-    font-size: 30px;
     color: #213f7d;
     margin-bottom: 15px;
   }
@@ -34,7 +30,6 @@
     border: none;
     padding: 12px 40px;
     border-radius: 8px;
-    font-weight: 600;
     cursor: pointer;
     transition: opacity 0.3s;
 
