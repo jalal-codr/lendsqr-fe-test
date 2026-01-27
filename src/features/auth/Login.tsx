@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import styles from "../../styles/pages/_login.module.scss";
-import logo from "../../assets/images/Group.svg";
+import logo from "../../assets/images/group.svg";
 import illustration from "../../assets/images/pablo-sign-in.svg";
 
 const Login = () => {
