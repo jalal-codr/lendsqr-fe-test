@@ -40,11 +40,9 @@
     
     @media (max-width: 768px) {
       margin-top: 20px;
-      // Enable horizontal scroll on mobile
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
-      
-      // Hide scrollbar but keep functionality
+      -webkit-overflow-scrolling: touch;
+    
       scrollbar-width: thin;
       scrollbar-color: rgba(33, 63, 125, 0.2) transparent;
       
@@ -69,7 +67,6 @@
     
     @media (max-width: 768px) {
       margin-top: 16px;
-      // Ensure pagination doesn't scroll with table
       overflow-x: visible;
     }
   }
