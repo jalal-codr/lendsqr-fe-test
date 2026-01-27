@@ -2,8 +2,6 @@ $text-main: #213F7D;
 $text-muted: #545F7D;
 $border-color: rgba(33, 63, 125, 0.1);
 
-
-
 .tableWrapper {
   background: #ffffff;
   border: 1px solid rgba(33, 63, 125, 0.06);
@@ -11,23 +9,80 @@ $border-color: rgba(33, 63, 125, 0.1);
   border-radius: 4px;
   padding: 30px 20px 0 20px; 
   margin-top: 40px;
-  overflow-x: auto;
   width: 100%;
   position: relative;
-  overflow-x: auto; 
+  overflow-x: auto;
   overflow-y: visible;
   min-height: 450px;
+  
+  -webkit-overflow-scrolling: touch;
+  
+  scrollbar-width: thin;
+  scrollbar-color: rgba(33, 63, 125, 0.2) transparent;
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(33, 63, 125, 0.05);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(33, 63, 125, 0.2);
+    border-radius: 4px;
+    
+    &:hover {
+      background-color: rgba(33, 63, 125, 0.3);
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px 16px 0 16px;
+    margin-top: 20px;
+    border-radius: 4px;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 100%;
+      background: linear-gradient(to left, rgba(255, 255, 255, 0.9), transparent);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    &:not(:hover)::after {
+      opacity: 1;
+    }
+  }
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
   font-family: 'Work Sans', sans-serif;
+  
+  @media (max-width: 768px) {
+    min-width: 900px;
+  }
+  
+  @media (max-width: 480px) {
+    min-width: 800px;
+  }
 
   thead {
     th {
       padding: 0 10px 15px 10px;
       text-align: left;
+      
+      @media (max-width: 768px) {
+        padding: 0 8px 12px 8px;
+      }
       
       .headerContent {
         display: flex;
@@ -40,18 +95,35 @@ $border-color: rgba(33, 63, 125, 0.1);
         color: $text-muted;
         white-space: nowrap;
 
+        @media (max-width: 768px) {
+          font-size: 11px;
+          gap: 6px;
+        }
+
         img {
           width: 16px; 
           height: 16px;
+          
+          @media (max-width: 768px) {
+            width: 14px;
+            height: 14px;
+          }
         }
       }
     }
   }
+
   .noDataCell {
     text-align: center;
     padding: 50px 0;
     color: #545F7D;
+    
+    @media (max-width: 768px) {
+      padding: 30px 0;
+      font-size: 14px;
+    }
   }
+
   tbody {
     tr {
       border-bottom: 1px solid $border-color;
@@ -68,6 +140,11 @@ $border-color: rgba(33, 63, 125, 0.1);
         vertical-align: middle;
         white-space: nowrap;
 
+        @media (max-width: 768px) {
+          padding: 12px 8px;
+          font-size: 13px;
+        }
+
         .actionBtn {
           display: flex;
           align-items: center;
@@ -77,11 +154,22 @@ $border-color: rgba(33, 63, 125, 0.1);
           background: none;
           border: none;
           cursor: pointer;
-          margin-left: auto; 
+          margin-left: auto;
+          
+          @media (max-width: 768px) {
+            width: 32px;
+            height: 32px;
+            margin: -6px;
+          }
 
           img {
             width: 20px; 
             height: 20px;
+            
+            @media (max-width: 768px) {
+              width: 18px;
+              height: 18px;
+            }
           }
         }
       }
@@ -98,17 +186,39 @@ $border-color: rgba(33, 63, 125, 0.1);
   text-align: center;
   min-width: 80px;
 
-  &.inactive { background: rgba(84, 95, 125, 0.06); color: $text-muted; }
-  &.pending { background: rgba(233, 178, 0, 0.1); color: #E9B200; }
-  &.blacklisted { background: rgba(228, 3, 59, 0.1); color: #E4033B; }
-  &.active { background: rgba(57, 205, 98, 0.06); color: #39CD62; }
+  @media (max-width: 768px) {
+    padding: 5px 12px;
+    font-size: 11px;
+    min-width: 70px;
+  }
+
+  &.inactive { 
+    background: rgba(84, 95, 125, 0.06); 
+    color: $text-muted; 
+  }
+  
+  &.pending { 
+    background: rgba(233, 178, 0, 0.1); 
+    color: #E9B200; 
+  }
+  
+  &.blacklisted { 
+    background: rgba(228, 3, 59, 0.1); 
+    color: #E4033B; 
+  }
+  
+  &.active { 
+    background: rgba(57, 205, 98, 0.06); 
+    color: #39CD62; 
+  }
 }
 
-
-
-
 .actionCell {
-  position: relative; 
+  position: relative;
+  
+  @media (max-width: 768px) {
+    position: static;
+  }
 }
 
 .popoverMenu {
@@ -125,6 +235,15 @@ $border-color: rgba(33, 63, 125, 0.1);
   flex-direction: column;
   padding: 10px 0;
 
+  @media (max-width: 768px) {
+    position: fixed;
+    right: 10px;
+    top: auto;
+    left: auto;
+    transform: translateY(-50%);
+    width: 160px;
+  }
+
   button {
     display: flex;
     align-items: center;
@@ -139,6 +258,12 @@ $border-color: rgba(33, 63, 125, 0.1);
     text-align: left;
     transition: background 0.2s;
 
+    @media (max-width: 768px) {
+      padding: 10px 16px;
+      font-size: 13px;
+      gap: 8px;
+    }
+
     &:hover {
       background: rgba(33, 63, 125, 0.05);
     }
@@ -146,14 +271,26 @@ $border-color: rgba(33, 63, 125, 0.1);
     img {
       width: 16px;
       height: 16px;
+      
+      @media (max-width: 768px) {
+        width: 14px;
+        height: 14px;
+      }
     }
   }
 }
 
 .filterIcon {
   cursor: pointer;
+  transition: opacity 0.2s;
+  
   &:hover {
     opacity: 0.7;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 4px;
+    margin: -4px;
   }
 }
 
@@ -165,9 +302,19 @@ $border-color: rgba(33, 63, 125, 0.1);
   padding: 4rem 0;
   gap: 1.5rem;
 
+  @media (max-width: 768px) {
+    padding: 3rem 1rem;
+    gap: 1rem;
+  }
+
   p {
     color: #545f7d;
     font-size: 1.4rem;
+    
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
+      text-align: center;
+    }
   }
 
   .resetSearchBtn {
@@ -180,9 +327,42 @@ $border-color: rgba(33, 63, 125, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
 
+    @media (max-width: 768px) {
+      padding: 0.6rem 2rem;
+      font-size: 0.9rem;
+    }
+
     &:hover {
       background: #39cdcc;
       color: #ffffff;
     }
+    
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .tableWrapper {
+    &::before {
+      content: '← Scroll →';
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: rgba(84, 95, 125, 0.5);
+      font-weight: 500;
+      pointer-events: none;
+      opacity: 0;
+      animation: fadeInOut 3s ease-in-out;
+      animation-delay: 1s;
+    }
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
   }
 }
