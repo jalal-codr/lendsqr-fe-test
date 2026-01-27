@@ -1,6 +1,6 @@
 import { HiMenuAlt2, HiX } from "react-icons/hi";
 import styles from "../../styles/components/_topbar.module.scss";
-import logo from "../../assets/images/Group.svg";
+import logo from "../../assets/images/group.svg";
 import searchIcon from "../../assets/icons/search.png";
 import bellIcon from "../../assets/icons/bell.png";
 import avatar from "../../assets/images/avatar.png";
