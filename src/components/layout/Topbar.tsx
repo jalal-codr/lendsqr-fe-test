@@ -7,7 +7,7 @@ import avatar from "../../assets/images/avatar.png";
 import caretIcon from "../../assets/icons/np_dropdown.png";
 
 interface TopbarProps {
-  isOpen: boolean;        // 2. Added isOpen state
+  isOpen: boolean;      
   onMenuClick: () => void;
 }
 
