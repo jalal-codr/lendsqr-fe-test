@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import styles from '../../styles/components/_usersTable.module.scss';
 import MoreVertIcon from '../../assets/icons/ic-more-vert-18px.png';
 import FilterIcon from '../../assets/icons/filter-results-button.png';
@@ -21,14 +22,17 @@ interface UserTableProps {
 const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilter }) => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [showFilter, setShowFilter] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const { saveUserDetails } = useUserDetails();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setActiveMenu(null);
+        setMenuPosition(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -38,10 +42,30 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
   const handleViewDetails = (user: UserDetails) => {
     saveUserDetails(user);
     navigate(`/users/${user.id}`);
+    setActiveMenu(null);
+    setMenuPosition(null);
   };
 
-  const toggleMenu = (e: React.MouseEvent, userId: string) => {
+  const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>, userId: string) => {
     e.stopPropagation();
+    
+    const button = e.currentTarget;
+    const rect = button.getBoundingClientRect();
+    
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      setMenuPosition({
+        top: rect.bottom + window.scrollY + 5,
+        left: window.innerWidth - 170,
+      });
+    } else {
+      setMenuPosition({
+        top: rect.bottom + window.scrollY + 5,
+        left: rect.right + window.scrollX - 180,
+      });
+    }
+    
     setActiveMenu(activeMenu === userId ? null : userId);
   };
 
@@ -98,22 +122,45 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
                   </span>
                 </td>
                 <td className={styles.actionCell}>
-                  <button className={styles.actionBtn} onClick={(e) => toggleMenu(e, user.id)}>
+                  <button 
+                    ref={(el) => {
+                      if (el) buttonRefs.current[user.id] = el;
+                    }}
+                    className={styles.actionBtn} 
+                    onClick={(e) => toggleMenu(e, user.id)}
+                  >
                     <img src={MoreVertIcon} alt="actions" />
                   </button>
 
-                  {activeMenu === user.id && (
-                    <div className={styles.popoverMenu} ref={menuRef}>
+                  {activeMenu === user.id && menuPosition && createPortal(
+                    <div 
+                      className={styles.popoverMenu} 
+                      ref={menuRef}
+                      style={{
+                        position: 'fixed',
+                        top: `${menuPosition.top}px`,
+                        left: `${menuPosition.left}px`,
+                        zIndex: 1000,
+                      }}
+                    >
                       <button onClick={() => handleViewDetails(user)}>
                         <img src={EyeIcon} alt="view" /> View Details
                       </button>
-                      <button>
+                      <button onClick={() => {
+                        setActiveMenu(null);
+                        setMenuPosition(null);
+                        // Add your blacklist logic here
+                      }}>
                         <img src={BlacklistIcon} alt="blacklist" /> Blacklist User
                       </button>
-                      <button>
+                      <button onClick={() => {
+                        setActiveMenu(null);
+                        setMenuPosition(null);
+                      }}>
                         <img src={ActivateIcon} alt="activate" /> Activate User
                       </button>
-                    </div>
+                    </div>,
+                    document.body
                   )}
                 </td>
               </tr>
