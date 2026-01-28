@@ -1,11 +1,14 @@
+$primary-blue: #213f7d;
+$font-family: 'Work Sans', sans-serif;
+
 .sidebar {
   width: 283px;
   background: #ffffff;
   padding: 40px 0;
   overflow-y: auto;
-  height: auto;
   z-index: 30;
   transition: transform 0.3s ease;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.04);
 
   @media (max-width: 768px) {
     position: fixed;
@@ -27,102 +30,138 @@
 .switchOrg {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 0 30px;
   height: 40px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #213f7d;
   cursor: pointer;
   margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 
   img:first-child {
     width: 16px;
     height: 16px;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: 16px;
+    font-family: $font-family;
+    font-weight: 400;
+    color: $primary-blue;
+    white-space: nowrap;
   }
 
   .caret {
-    width: 10px;
-    height: 6px;
+    width: 14px;
+    margin-left: auto;
+    flex-shrink: 0;
   }
+
+  &:hover {
+    background: rgba(57, 205, 204, 0.04);
+  }
+}
+
+.navContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .section {
-  margin: 20px 30px 10px;
+  margin: 30px 30px 10px;
   font-size: 12px;
   font-weight: 600;
-  opacity: 0.5;
-}
-
-nav {
-  display: flex;
-  flex-direction: column;
-
-  a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: 40px;
-    padding: 0 30px;
-    color: #213f7d;
-    opacity: 0.6;
-    cursor: pointer;
-    text-decoration: none;
-
-    img {
-      width: 16px;
-      height: 16px;
-    }
-
-    span {
-      font-size: 16px;
-    }
-
-    &:hover {
-      background: #f3fcfc;
-    }
-  }
-
-  .active {
-    background: #f3fcfc;
-    border-left: 3px solid #39cdcc;
-    opacity: 1;
-  }
+  color: #545F7D;
+  text-transform: uppercase;
+  opacity: 0.7;
 }
 
 .link {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 20px;
-  color: #213f7d;
+  gap: 12px;
+  height: 40px;
+  padding: 0 30px;
   text-decoration: none;
-  font-weight: 400;
+  color: $primary-blue;
   opacity: 0.6;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
 
   img {
     width: 16px;
     height: 16px;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: 16px;
+    font-family: $font-family;
+    font-weight: 400;
+  }
+
+  &:hover {
+    background: rgba(57, 205, 204, 0.04);
+    opacity: 1;
+  }
+
+  &.active {
+    background: rgba(57, 205, 204, 0.06);
+    border-left: 3px solid #39cdcc;
+    opacity: 1;
   }
 }
 
-.active {
-  background: rgba(57, 205, 204, 0.06);
-  border-left: 3px solid #39cdcc;
-  opacity: 1;
-}
+.logoutWrapper {
+  margin-top: 40px;
+  padding-bottom: 40px;
 
-.closeBtn {
-  display: none;
+  .divider {
+    height: 1px;
+    background: #213f7d;
+    opacity: 0.1;
+    margin-bottom: 20px;
+  }
 
-  @media (max-width: 768px) {
-    display: block;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 24px;
+  // Specific style for the Logout div
+  .logoutBtn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+    padding: 0 30px;
     cursor: pointer;
+    transition: background 0.2s ease;
+
+    img {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    span {
+      font-size: 16px;
+      font-family: $font-family;
+      font-weight: 400;
+      color: #213F7D;
+      opacity: 1;    
+    }
+
+    &:hover {
+      background: rgba(57, 205, 204, 0.04);
+    }
+  }
+
+  .version {
+    padding: 20px 30px 0;
+    
+    span {
+      font-size: 12px;
+      color: #213f7d;
+      font-family: $font-family;
+    }
   }
 }

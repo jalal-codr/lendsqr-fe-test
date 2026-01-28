@@ -18,6 +18,50 @@ const Pagination = ({
   onPageChange,
   onPageSizeChange,
 }: PaginationProps) => {
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    const maxVisiblePages = 5; 
+    
+    if (totalPages <= maxVisiblePages + 2) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
+      if (currentPage <= 3) {
+        startPage = 2;
+        endPage = 4;
+      }
+      
+      if (currentPage >= totalPages - 2) {
+        startPage = totalPages - 3;
+        endPage = totalPages - 1;
+      }
+      
+      if (startPage > 2) {
+        pages.push('...');
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      
+      if (endPage < totalPages - 1) {
+        pages.push('...');
+      }
+      
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers();
+
   return (
     <div className={styles.paginationContainer}>
       <div className={styles.showingCount}>
@@ -46,27 +90,25 @@ const Pagination = ({
           &lt;
         </button>
 
-        {[...Array(totalPages)].slice(0, 3).map((_, i) => {
-          const page = i + 1;
+        {pageNumbers.map((page, index) => {
+          if (page === '...') {
+            return (
+              <span key={`ellipsis-${index}`} className={styles.ellipsis}>
+                ...
+              </span>
+            );
+          }
+          
           return (
             <span
               key={page}
-              className={page === currentPage ? styles.activePage : undefined}
-              onClick={() => onPageChange(page)}
+              className={page === currentPage ? styles.activePage : styles.pageNumber}
+              onClick={() => onPageChange(page as number)}
             >
               {page}
             </span>
           );
         })}
-
-        {totalPages > 3 && <span>...</span>}
-
-        <span
-          className={currentPage === totalPages ? styles.activePage : undefined}
-          onClick={() => onPageChange(totalPages)}
-        >
-          {totalPages}
-        </span>
 
         <button
           className={styles.arrow}

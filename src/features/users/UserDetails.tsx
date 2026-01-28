@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import InfoSection from '../../components/common/InfoSection';
 import UserHeaderTabs from '../../components/common/UserHeaderTabs';
 import { useUserDetails } from '../../hooks/useLocalStorage';
+import BackArrow from '../../assets/icons/vectorArrow.png';
 
 const UserDetails = () => {
   const { selectedUser } = useUserDetails();
@@ -11,9 +12,10 @@ const UserDetails = () => {
   if (!selectedUser) {
     return (
       <div className={styles.wrapper}>
-        <Link to="/users" className={styles.backLink}>
-          ← Back to Users
-        </Link>
+      <Link to="/users" className={styles.backLink}>
+        <img src={BackArrow} alt="Back" />
+        <span>Back to Users</span>
+      </Link>
         <div className={styles.detailsCard}>
           <p>No user selected. Please select a user from the users list.</p>
         </div>
@@ -31,16 +33,17 @@ const UserDetails = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Link to="/users" className={styles.backLink}>
-        ← Back to Users
-      </Link>
+    <Link to="/users" className={styles.backLink}>
+      <img src={BackArrow} alt="Back" />
+      <span>Back to Users</span>
+    </Link>
 
       <div className={styles.headerRow}>
         <h1>User Details</h1>
 
         <div className={styles.actions}>
-          <button className={styles.blacklist}>Blacklist User</button>
-          <button className={styles.activate}>Activate User</button>
+          <button className={styles.blacklist}>BLACKLIST USER</button>
+          <button className={styles.activate}>ACTIVATE USER</button>
         </div>
       </div>
       
