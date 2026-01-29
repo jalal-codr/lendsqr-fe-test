@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createPortal } from 'react-dom';
 import styles from '../../styles/components/_usersTable.module.scss';
 import MoreVertIcon from '../../assets/icons/ic-more-vert-18px.png';
 import FilterIcon from '../../assets/icons/filter-results-button.png';
@@ -22,131 +21,89 @@ interface UserTableProps {
 const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilter }) => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
-  const [showFilter, setShowFilter] = useState(false);
+  const [showFilter, setShowFilter] = useState<string | null>(null);
+  const [openUpwards, setOpenUpwards] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
-  const tableWrapperRef = useRef<HTMLDivElement>(null);
-  const buttonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const { saveUserDetails } = useUserDetails();
 
-  // Handle click outside for menu
+  // Handle click outside for both menu and filter
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setActiveMenu(null);
-        setMenuPosition(null);
+      }
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        const target = event.target as HTMLElement;
+        if (!target.closest(`.${styles.filterIcon}`)) {
+          setShowFilter(null);
+        }
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle click outside for filter
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-        const target = event.target as HTMLElement;
-        const isFilterIcon = target.closest(`.${styles.filterIcon}`);
-        
-        if (!isFilterIcon) {
-          setShowFilter(false);
-        }
-      }
-    };
-    
-    if (showFilter) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showFilter]);
-
-  // Scroll to show filter when opened
-  useEffect(() => {
-    if (showFilter && filterRef.current) {
-      const isMobile = window.innerWidth <= 768;
-      
-      if (isMobile) {
-        // On mobile, scroll the filter into view with some padding
-        setTimeout(() => {
-          filterRef.current?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-          });
-        }, 100);
-      }
-    }
-  }, [showFilter]);
-
   const handleViewDetails = (user: UserDetails) => {
     saveUserDetails(user);
     navigate(`/users/${user.id}`);
     setActiveMenu(null);
-    setMenuPosition(null);
   };
 
-  const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>, userId: string) => {
+  const toggleMenu = (e: React.MouseEvent, userId: string) => {
     e.stopPropagation();
     
-    const button = e.currentTarget;
-    const rect = button.getBoundingClientRect();
+    // Detect if row is near bottom of screen to flip menu upward
+    const buttonRect = e.currentTarget.getBoundingClientRect();
+    const screenHeight = window.innerHeight;
     
-    const isMobile = window.innerWidth <= 768;
-    
-    if (isMobile) {
-      setMenuPosition({
-        top: rect.bottom + 5,
-        left: window.innerWidth - 170,
-      });
+    // If button is in the bottom 40% of the screen, open upwards
+    if (buttonRect.bottom > screenHeight * 0.6) {
+      setOpenUpwards(true);
     } else {
-      setMenuPosition({
-        top: rect.bottom + 5,
-        left: rect.right + window.scrollX - 180,
-      });
+      setOpenUpwards(false);
     }
     
     setActiveMenu(activeMenu === userId ? null : userId);
   };
 
-  const toggleFilter = (e: React.MouseEvent) => {
+  const toggleFilter = (e: React.MouseEvent, header: string) => {
     e.stopPropagation();
-    setShowFilter((prev) => !prev);
+    setShowFilter(showFilter === header ? null : header);
   };
 
   return (
-    <div className={styles.tableWrapper} ref={tableWrapperRef}>
+    <div className={styles.tableWrapper}>
       <table className={styles.table}>
         <thead>
           <tr>
             {['Organization', 'Username', 'Email', 'Phone Number', 'Date Joined', 'Status'].map((header) => (
-              <th key={header}>
+              <th key={header} className={styles.headerCell}>
                 <div className={styles.headerContent}>
                   {header} 
                   <img
                     src={FilterIcon}
                     alt="filter"
                     className={styles.filterIcon}
-                    onClick={toggleFilter}
+                    onClick={(e) => toggleFilter(e, header)}
                   />
                 </div>
                 
-                {/* Anchor filter to Organization column */}
-                {showFilter && header === 'Organization' && ( 
-                    <div className={styles.filterContainer} ref={filterRef}>
-                        <UsersFilter
-                        onApply={(values) => {
-                            onApplyFilter(values);
-                            setShowFilter(false);
-                        }}
-                        onReset={() => {
-                            onResetFilter();
-                            setShowFilter(false);
-                        }}
-                        onClose={() => setShowFilter(false)}
-                        />
-                    </div>
-                  )}
+                {showFilter === header && ( 
+                  <div className={styles.filterContainer} ref={filterRef}>
+                    <UsersFilter
+                      onApply={(values) => {
+                        onApplyFilter(values);
+                        setShowFilter(null);
+                      }}
+                      onReset={() => {
+                        onResetFilter();
+                        setShowFilter(null);
+                      }}
+                      onClose={() => setShowFilter(null)}
+                    />
+                  </div>
+                )}
               </th>
             ))}
             <th></th>
@@ -167,44 +124,25 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
                   </span>
                 </td>
                 <td className={styles.actionCell}>
-                  <button 
-                    ref={(el) => {
-                      if (el) buttonRefs.current[user.id] = el;
-                    }}
-                    className={styles.actionBtn} 
-                    onClick={(e) => toggleMenu(e, user.id)}
-                  >
+                  <button className={styles.actionBtn} onClick={(e) => toggleMenu(e, user.id)}>
                     <img src={MoreVertIcon} alt="actions" />
                   </button>
 
-                  {activeMenu === user.id && menuPosition && createPortal(
+                  {activeMenu === user.id && (
                     <div 
-                      className={styles.popoverMenu} 
+                      className={`${styles.popoverMenu} ${openUpwards ? styles.openUp : ''}`} 
                       ref={menuRef}
-                      style={{
-                        position: 'fixed',
-                        top: `${menuPosition.top}px`,
-                        left: `${menuPosition.left}px`,
-                        zIndex: 1000,
-                      }}
                     >
                       <button onClick={() => handleViewDetails(user)}>
                         <img src={EyeIcon} alt="view" /> View Details
                       </button>
-                      <button onClick={() => {
-                        setActiveMenu(null);
-                        setMenuPosition(null);
-                      }}>
+                      <button onClick={() => setActiveMenu(null)}>
                         <img src={BlacklistIcon} alt="blacklist" /> Blacklist User
                       </button>
-                      <button onClick={() => {
-                        setActiveMenu(null);
-                        setMenuPosition(null);
-                      }}>
+                      <button onClick={() => setActiveMenu(null)}>
                         <img src={ActivateIcon} alt="activate" /> Activate User
                       </button>
-                    </div>,
-                    document.body
+                    </div>
                   )}
                 </td>
               </tr>
@@ -214,10 +152,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
               <td colSpan={7} className={styles.noDataCell}>
                 <div className={styles.noDataWrapper}>
                   <p>No records found matching your filters.</p>
-                  <button 
-                    onClick={onResetFilter} 
-                    className={styles.resetSearchBtn}
-                  >
+                  <button onClick={onResetFilter} className={styles.resetSearchBtn}>
                     Reset Filter
                   </button>
                 </div>
