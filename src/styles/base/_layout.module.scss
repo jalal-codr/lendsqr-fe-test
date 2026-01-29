@@ -30,7 +30,10 @@
   background: rgba(33, 63, 125, 0.2);
   backdrop-filter: blur(2px);
   z-index: 20;
-  pointer-events: auto;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
 
 .menuBtn {

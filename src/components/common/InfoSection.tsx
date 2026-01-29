@@ -17,7 +17,7 @@ const InfoSection: React.FC<InfoSectionProps> = ({
 
       <div
         className={styles.grid}
-        style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
+        style={{ '--columns': columns } as React.CSSProperties}
       >
         {items.map(([label, value]) => (
           <div key={label} className={styles.item}>

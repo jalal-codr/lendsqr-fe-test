@@ -8,6 +8,7 @@ import BackArrow from '../../assets/icons/vectorArrow.png';
 const UserDetails = () => {
   const { selectedUser } = useUserDetails();
 
+
   
   if (!selectedUser) {
     return (
@@ -32,12 +33,13 @@ const UserDetails = () => {
     : 'N/A';
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.content}>
+       <div className={styles.wrapper}>
     <Link to="/users" className={styles.backLink}>
       <img src={BackArrow} alt="Back" />
       <span>Back to Users</span>
     </Link>
-
+ 
       <div className={styles.headerRow}>
         <h1>User Details</h1>
 
@@ -97,6 +99,7 @@ const UserDetails = () => {
           ]}
         />
       </div>
+    </div>
     </div>
   );
 };

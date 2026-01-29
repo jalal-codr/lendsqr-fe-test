@@ -6,7 +6,12 @@ $font-family: 'Work Sans', sans-serif;
   background: #ffffff;
   padding: 40px 0;
   overflow-y: auto;
-  z-index: 30;
+  position: relative;
+  z-index: 5;
+
+  flex-shrink: 0;       // ✅ stops flex hitbox bleed
+  isolation: isolate;  // ✅ prevents overlap blocking
+
   transition: transform 0.3s ease;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.04);
 
@@ -18,8 +23,8 @@ $font-family: 'Work Sans', sans-serif;
     height: 100vh;
     padding-top: 90px;
     padding-bottom: 20px;
-    box-sizing: border-box;
     transform: translateX(-100%);
+    z-index: 30;
   }
 }
 
@@ -50,13 +55,9 @@ $font-family: 'Work Sans', sans-serif;
     font-weight: 400;
     color: #213F7D;
     white-space: nowrap;
-    font-family: Work Sans;
-    leading-trim: NONE;
+    font-family: 'Work Sans', sans-serif;
     line-height: 100%;
     letter-spacing: 0px;
-    font-family: Work Sans;
-    
-
   }
 
   .caret {
@@ -108,7 +109,6 @@ $font-family: 'Work Sans', sans-serif;
     font-family: $font-family;
     font-weight: 400;
     color: #213F7D;
-
   }
 
   &:hover {
@@ -134,7 +134,6 @@ $font-family: 'Work Sans', sans-serif;
     margin-bottom: 20px;
   }
 
-  // Specific style for the Logout div
   .logoutBtn {
     display: flex;
     align-items: center;
@@ -155,7 +154,7 @@ $font-family: 'Work Sans', sans-serif;
       font-family: $font-family;
       font-weight: 400;
       color: #213F7D;
-      opacity: 1;    
+      opacity: 1;
     }
 
     &:hover {
@@ -165,7 +164,7 @@ $font-family: 'Work Sans', sans-serif;
 
   .version {
     padding: 20px 30px 0;
-    
+
     span {
       font-size: 12px;
       color: #213f7d;

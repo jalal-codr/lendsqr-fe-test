@@ -1,6 +1,7 @@
 .wrapper {
-  padding: 40px 60px;
+  padding: 40px 5%; 
   background: #fbfbfb;
+  position: relative;
 }
 
 .backLink {
@@ -8,15 +9,14 @@
   font-size: 14px;
   margin-bottom: 20px;
   text-decoration: none;
-  display: flex;
-  align-items: center; 
+  display: inline-flex;
+  align-items: center;
   gap: 12px;
   transition: opacity 0.2s ease;
-  z-index: 50;
 
   img {
-    width: 24px; 
-    height: auto;       
+    width: 24px;
+    height: auto;
     display: block;
   }
 
@@ -25,13 +25,13 @@
   }
 
   &:hover {
-    text-decoration: none; 
-    opacity: 0.7;      
+    text-decoration: none;
+    opacity: 0.7;
   }
 }
 
-p{
-  font-family: Work Sans;
+p {
+  font-family: 'Work Sans', sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 100%;
@@ -44,18 +44,21 @@ p{
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
 
   h1 {
     color: #213f7d;
-    font-family: Work Sans;
+    font-family: 'Work Sans', sans-serif;
     font-weight: 500;
     font-size: 22px;
     line-height: 100%;
     letter-spacing: 0px;
   }
 }
-span{
-  font-family: Work Sans;
+
+span {
+  font-family: 'Work Sans', sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
@@ -72,6 +75,7 @@ span{
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
+  font-family: 'Work Sans', sans-serif;
   background: #fff;
   border: 1px solid #39cdcc;
   color: #39cdcc;
@@ -88,6 +92,7 @@ span{
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
+  font-family: 'Work Sans', sans-serif;
   background: #fff;
   border: 1px solid #e4033b;
   color: #e4033b;
@@ -100,7 +105,6 @@ span{
   }
 }
 
-
 .activate {
   border: 1px solid #39cdcc;
   color: #39cdcc;
@@ -110,6 +114,8 @@ span{
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 1;
 }
 
 .userHeader {
@@ -141,12 +147,14 @@ span{
 
 .profile h2 {
   font-size: 22px;
+  font-family: 'Work Sans', sans-serif;
   color: #213f7d;
   margin: 0;
 }
 
 .profile p {
   font-size: 14px;
+  font-family: 'Work Sans', sans-serif;
   color: #545f7d;
   margin-top: 6px;
 }
@@ -159,6 +167,7 @@ span{
 
 .tier span {
   font-size: 14px;
+  font-family: 'Work Sans', sans-serif;
   color: #545f7d;
 }
 
@@ -175,39 +184,39 @@ span{
 
 .balance h3 {
   color: #213f7d;
+  font-family: 'Work Sans', sans-serif;
   font-size: 22px;
   margin: 0;
 }
 
 .balance p {
   font-size: 14px;
+  font-family: 'Work Sans', sans-serif;
   color: #545f7d;
   margin-top: 6px;
 }
 
-
 .tabs {
   display: flex;
-  justify-content: space-between; 
-  padding: 0 30px; 
+  justify-content: space-between;
+  padding: 0 30px;
   width: 100%;
   box-sizing: border-box;
 }
 
 .tab {
-  padding: 18px 0; 
+  padding: 18px 0;
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease;
-  flex: 1; 
-  font-family: SF Compact Text;
+  flex: 1;
+  font-family: 'Work Sans', sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 100%;
   letter-spacing: 0%;
   text-align: center;
   color: #000000CC;
-
 
   &:hover {
     color: #39cdcc;
@@ -228,25 +237,27 @@ span{
   }
 }
 
-
 @media (max-width: 768px) {
   .tabs {
     justify-content: flex-start;
     gap: 30px;
     overflow-x: auto;
     padding: 0 20px;
-    
+
     .tab {
-      flex: none; 
+      flex: none;
       padding: 18px 10px;
     }
   }
 }
+
 .detailsCard {
   background: #fff;
   margin-top: 30px;
   border-radius: 4px;
   padding: 30px;
+  position: relative;
+  z-index: 1;
 }
 
 .section {
@@ -254,6 +265,7 @@ span{
 
   h4 {
     margin-bottom: 20px;
+    font-family: 'Work Sans', sans-serif;
     color: #213f7d;
     font-size: 16px;
   }
@@ -261,18 +273,19 @@ span{
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 30px;
 }
 
 .item span {
   font-size: 12px;
+  font-family: 'Work Sans', sans-serif;
   color: #545f7d;
 }
 
 .item p {
   font-size: 16px;
-  // color: #213f7d;
+  font-family: 'Work Sans', sans-serif;
   margin-top: 6px;
 }
 
@@ -286,40 +299,23 @@ span{
     margin-bottom: 0;
     padding-bottom: 0;
   }
-  p{
-    // color: #545F7D;
-    font-family: Work Sans;
+
+  p {
+    font-family: 'Work Sans', sans-serif;
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;
     letter-spacing: 0px;
-
+    color: #545F7D;
   }
 }
 
 h4 {
   margin-bottom: 20px;
+  font-family: 'Work Sans', sans-serif;
   color: #213f7d;
   font-size: 16px;
 }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
-}
-
-.item span {
-  font-size: 12px;
-  color: #545f7d;
-}
-
-.item p {
-  font-size: 16px;
-  // color: #213f7d;
-  margin-top: 6px;
-}
-
 
 @media (max-width: 1024px) {
   .grid {
@@ -329,7 +325,7 @@ h4 {
 
 @media (max-width: 768px) {
   .wrapper {
-    padding: 20px; 
+    padding: 20px;
   }
 
   .headerRow {
@@ -339,7 +335,7 @@ h4 {
   }
 
   .userHeader {
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 30px;
@@ -354,9 +350,9 @@ h4 {
     padding: 0 20px;
     overflow-x: auto;
     white-space: nowrap;
-    
+
     &::-webkit-scrollbar {
-      display: none; 
+      display: none;
     }
   }
 
@@ -369,7 +365,7 @@ h4 {
   .actions {
     width: 100%;
     flex-direction: column;
-    
+
     button {
       width: 100%;
     }
