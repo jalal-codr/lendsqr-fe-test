@@ -20,8 +20,14 @@ form {
 label {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
   color: #545f7d;
+  font-family: Work Sans;
+  font-weight: 500;
+  font-size: 14px;
+  leading-trim: NONE;
+  line-height: 100%;
+  letter-spacing: 0%;
+
 
   input,
   select {

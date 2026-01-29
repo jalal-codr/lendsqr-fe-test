@@ -69,6 +69,7 @@ const UserDetails = () => {
 
         <InfoSection
           title="Education and Employment"
+          columns={4}
           items={[
             ['LEVEL OF EDUCATION', selectedUser.education?.level || 'N/A'],
             ['EMPLOYMENT STATUS', selectedUser.education?.employmentStatus || 'N/A'],
