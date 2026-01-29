@@ -136,10 +136,10 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
                       <button onClick={() => handleViewDetails(user)}>
                         <img src={EyeIcon} alt="view" /> View Details
                       </button>
-                      <button onClick={() => setActiveMenu(null)}>
+                      <button className={styles.blockBtn} onClick={() => setActiveMenu(null)}>
                         <img src={BlacklistIcon} alt="blacklist" /> Blacklist User
                       </button>
-                      <button onClick={() => setActiveMenu(null)}>
+                      <button  onClick={() => setActiveMenu(null)}>
                         <img src={ActivateIcon} alt="activate" /> Activate User
                       </button>
                     </div>

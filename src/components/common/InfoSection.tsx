@@ -13,7 +13,7 @@ const InfoSection: React.FC<InfoSectionProps> = ({
 }) => {
   return (
     <div className={styles.infoSection}>
-      {title && <h4>{title}</h4>}
+      {title && <span className={styles.info_span}>{title}</span>}
 
       <div
         className={styles.grid}

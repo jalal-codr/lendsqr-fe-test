@@ -96,6 +96,15 @@ $border-color: rgba(33, 63, 125, 0.1);
     img { width: 20px; height: 20px; }
   }
 }
+.blockBtn{
+  font-family: Work Sans;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  text-align: center;
+
+}
 
 
 
@@ -140,10 +149,17 @@ $border-color: rgba(33, 63, 125, 0.1);
 .statusBadge {
   padding: 6px 14px;
   border-radius: 100px;
-  font-size: 12px;
   display: inline-block;
   min-width: 80px;
   text-align: center;
+  font-family: Work Sans;
+  font-weight: 400;
+  font-size: 14px;
+  leading-trim: NONE;
+  line-height: 100%;
+  letter-spacing: 0px;
+  text-align: center;
+
   &.inactive { background: rgba(84, 95, 125, 0.06); color: $text-muted; }
   &.pending { background: rgba(233, 178, 0, 0.1); color: #E9B200; }
   &.blacklisted { background: rgba(228, 3, 59, 0.1); color: #E4033B; }

@@ -166,6 +166,7 @@ span {
   font-family: 'Work Sans', sans-serif;
   color: #545f7d;
   margin-top: 6px;
+  
 }
 
 .divider {
@@ -211,6 +212,15 @@ span {
   padding: 0 30px;
   width: 100%;
   box-sizing: border-box;
+}
+.pUserName{
+  font-family: Work Sans;
+  font-weight: 500;
+  font-size: 22px;
+  // leading-trim: NONE;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: #213F7D;
 }
 
 .tab {
@@ -330,6 +340,17 @@ h4 {
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+.info_span{
+font-family: Work Sans;
+font-weight: 500;
+font-size: 16px;
+// leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0px;
+color: #213F7D;
+
 }
 
 @media (max-width: 768px) {

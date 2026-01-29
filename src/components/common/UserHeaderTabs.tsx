@@ -44,7 +44,7 @@ const UserHeaderTabs: React.FC<UserHeaderTabsProps> = ({ user }) => {
           </div>
 
           <div>
-            <h2>{`${user.profile.firstName} ${user.profile.lastName}`}</h2>
+            <span className={styles.pUserName}>{`${user.profile.firstName} ${user.profile.lastName}`}</span>
             <p>{user.id.split('-')[0].toUpperCase()}</p>
           </div>
         </div>
@@ -61,7 +61,7 @@ const UserHeaderTabs: React.FC<UserHeaderTabsProps> = ({ user }) => {
         <div className={styles.divider} />
 
         <div className={styles.balance}>
-          <h3>₦{user.account.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</h3>
+          <span className={styles.pUserName}>₦{user.account.balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
           <p>{user.account.accountNumber} / {user.account.bankName}</p>
         </div>
       </div>
