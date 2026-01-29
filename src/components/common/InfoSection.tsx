@@ -3,14 +3,22 @@ import styles from '../../styles/pages/_user-details.module.scss';
 interface InfoSectionProps {
   title?: string;
   items: [string, string][];
+  columns?: number;
 }
 
-const InfoSection: React.FC<InfoSectionProps> = ({ title, items }) => {
+const InfoSection: React.FC<InfoSectionProps> = ({
+  title,
+  items,
+  columns = 4,
+}) => {
   return (
     <div className={styles.infoSection}>
       {title && <h4>{title}</h4>}
 
-      <div className={styles.grid}>
+      <div
+        className={styles.grid}
+        style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
+      >
         {items.map(([label, value]) => (
           <div key={label} className={styles.item}>
             <span>{label}</span>

@@ -12,6 +12,7 @@
   align-items: center; 
   gap: 12px;
   transition: opacity 0.2s ease;
+  z-index: 50;
 
   img {
     width: 24px; 
@@ -29,6 +30,15 @@
   }
 }
 
+p{
+  font-family: Work Sans;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: #545F7D;
+}
+
 .headerRow {
   display: flex;
   justify-content: space-between;
@@ -36,9 +46,20 @@
   margin-bottom: 30px;
 
   h1 {
-    font-size: 24px;
     color: #213f7d;
+    font-family: Work Sans;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 100%;
+    letter-spacing: 0px;
   }
+}
+span{
+  font-family: Work Sans;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0px;
 }
 
 .actions {
@@ -175,14 +196,18 @@
 
 .tab {
   padding: 18px 0; 
-  font-size: 16px;
-  color: #000000;
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease;
   flex: 1; 
-  text-align: center; 
-  font-family: 'Work Sans', sans-serif;
+  font-family: SF Compact Text;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #000000CC;
+
 
   &:hover {
     color: #39cdcc;
@@ -247,7 +272,7 @@
 
 .item p {
   font-size: 16px;
-  color: #213f7d;
+  // color: #213f7d;
   margin-top: 6px;
 }
 
@@ -260,6 +285,15 @@
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+  }
+  p{
+    // color: #545F7D;
+    font-family: Work Sans;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0px;
+
   }
 }
 
@@ -282,7 +316,7 @@ h4 {
 
 .item p {
   font-size: 16px;
-  color: #213f7d;
+  // color: #213f7d;
   margin-top: 6px;
 }
 

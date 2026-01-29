@@ -52,6 +52,7 @@ const UserDetails = () => {
       <div className={styles.detailsCard}>
         <InfoSection
           title="Personal Information"
+          columns={5}
           items={[
             ['FULL NAME', `${selectedUser.profile.firstName} ${selectedUser.profile.lastName}`],
             ['PHONE NUMBER', selectedUser.profile.phoneNumber || 'N/A'],

@@ -16,7 +16,6 @@ const TABS = [
 
 type UserTab = (typeof TABS)[number];
 
-// Define the Props interface
 interface UserHeaderTabsProps {
   user: UserDetails;
 }

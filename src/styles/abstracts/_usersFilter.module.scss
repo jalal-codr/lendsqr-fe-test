@@ -8,6 +8,7 @@
   border-radius: 4px;
   box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.04);
   z-index: 50;
+  border: 1px solid rgba(33, 63, 125, 0.06);
 }
 
 form {
@@ -29,8 +30,15 @@ label {
     padding: 0 12px;
     border-radius: 8px;
     border: 1px solid rgba(33, 63, 125, 0.2);
-    font-size: 14px;
+    color: #545F7D;
     outline: none;
+    font-family: Work Sans;
+    font-weight: 400;
+    font-size: 14px;
+  
+    line-height: 100%;
+    letter-spacing: 0%;
+
   }
 }
 

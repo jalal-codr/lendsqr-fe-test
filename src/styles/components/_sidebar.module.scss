@@ -47,10 +47,16 @@ $font-family: 'Work Sans', sans-serif;
 
   span {
     font-size: 16px;
-    font-family: $font-family;
     font-weight: 400;
-    color: $primary-blue;
+    color: #213F7D;
     white-space: nowrap;
+    font-family: Work Sans;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0px;
+    font-family: Work Sans;
+    
+
   }
 
   .caret {
@@ -101,6 +107,8 @@ $font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     font-family: $font-family;
     font-weight: 400;
+    color: #213F7D;
+
   }
 
   &:hover {

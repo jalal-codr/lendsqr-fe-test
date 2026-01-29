@@ -25,9 +25,12 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [showFilter, setShowFilter] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
+  const tableWrapperRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const { saveUserDetails } = useUserDetails();
 
+  // Handle click outside for menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -38,6 +41,43 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Handle click outside for filter
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        const target = event.target as HTMLElement;
+        const isFilterIcon = target.closest(`.${styles.filterIcon}`);
+        
+        if (!isFilterIcon) {
+          setShowFilter(false);
+        }
+      }
+    };
+    
+    if (showFilter) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showFilter]);
+
+  // Scroll to show filter when opened
+  useEffect(() => {
+    if (showFilter && filterRef.current) {
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        // On mobile, scroll the filter into view with some padding
+        setTimeout(() => {
+          filterRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+          });
+        }, 100);
+      }
+    }
+  }, [showFilter]);
 
   const handleViewDetails = (user: UserDetails) => {
     saveUserDetails(user);
@@ -56,12 +96,12 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
     
     if (isMobile) {
       setMenuPosition({
-        top: rect.bottom + window.scrollY + 5,
+        top: rect.bottom + 5,
         left: window.innerWidth - 170,
       });
     } else {
       setMenuPosition({
-        top: rect.bottom + window.scrollY + 5,
+        top: rect.bottom + 5,
         left: rect.right + window.scrollX - 180,
       });
     }
@@ -69,8 +109,13 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
     setActiveMenu(activeMenu === userId ? null : userId);
   };
 
+  const toggleFilter = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowFilter((prev) => !prev);
+  };
+
   return (
-    <div className={styles.tableWrapper}>
+    <div className={styles.tableWrapper} ref={tableWrapperRef}>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -82,13 +127,13 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
                     src={FilterIcon}
                     alt="filter"
                     className={styles.filterIcon}
-                    onClick={() => setShowFilter((prev) => !prev)}
+                    onClick={toggleFilter}
                   />
                 </div>
                 
                 {/* Anchor filter to Organization column */}
                 {showFilter && header === 'Organization' && ( 
-                    <div className={styles.filterContainer}>
+                    <div className={styles.filterContainer} ref={filterRef}>
                         <UsersFilter
                         onApply={(values) => {
                             onApplyFilter(values);
@@ -149,7 +194,6 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
                       <button onClick={() => {
                         setActiveMenu(null);
                         setMenuPosition(null);
-                        // Add your blacklist logic here
                       }}>
                         <img src={BlacklistIcon} alt="blacklist" /> Blacklist User
                       </button>
@@ -166,7 +210,6 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
               </tr>
             ))
           ) : (
-            /* EMPTY STATE ROW */
             <tr>
               <td colSpan={7} className={styles.noDataCell}>
                 <div className={styles.noDataWrapper}>
