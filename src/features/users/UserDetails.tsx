@@ -13,7 +13,7 @@ const UserDetails = () => {
   if (!selectedUser) {
     return (
       <div className={styles.wrapper}>
-      <Link to="/users" className={styles.backLink}>
+      <Link to="/users" className={styles.backBtn}>
         <img src={BackArrow} alt="Back" />
         <span>Back to Users</span>
       </Link>
@@ -35,10 +35,10 @@ const UserDetails = () => {
   return (
     <div className={styles.content}>
        <div className={styles.wrapper}>
-    <Link to="/users" className={styles.backLink}>
-      <img src={BackArrow} alt="Back" />
-      <span>Back to Users</span>
-    </Link>
+      <Link to="/users" className={styles.backBtn}>
+        <img src={BackArrow} alt="Back" />
+        <span>Back to Users</span>
+      </Link>
  
       <div className={styles.headerRow}>
         <h1>User Details</h1>

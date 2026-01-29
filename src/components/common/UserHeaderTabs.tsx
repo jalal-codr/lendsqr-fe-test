@@ -37,17 +37,15 @@ const UserHeaderTabs: React.FC<UserHeaderTabsProps> = ({ user }) => {
 
   return (
     <div className={styles.userHeaderTabs}>
-      {/* ---------- HEADER ---------- */}
       <div className={styles.userHeader}>
         <div className={styles.profile}>
           <div className={styles.avatar}>
-            {/* Using a fallback icon if profile image doesn't exist */}
             <img src={avatarIcon} alt={`${user.profile.firstName} avatar`} />
           </div>
 
           <div>
             <h2>{`${user.profile.firstName} ${user.profile.lastName}`}</h2>
-            <p>{user.id.split('-')[0].toUpperCase() /* Shortened ID for display */}</p>
+            <p>{user.id.split('-')[0].toUpperCase()}</p>
           </div>
         </div>
 
@@ -67,8 +65,6 @@ const UserHeaderTabs: React.FC<UserHeaderTabsProps> = ({ user }) => {
           <p>{user.account.accountNumber} / {user.account.bankName}</p>
         </div>
       </div>
-
-      {/* ---------- TABS ---------- */}
       <div className={styles.tabs}>
         {TABS.map((tab) => {
           const isActive = activeTab === tab;
