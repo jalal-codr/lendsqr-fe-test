@@ -25,24 +25,38 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
   const [openUpwards, setOpenUpwards] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
+  const filterIconRefs = useRef<{ [key: string]: HTMLImageElement | null }>({});
+  const actionButtonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const { saveUserDetails } = useUserDetails();
 
-  // Handle click outside for both menu and filter
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setActiveMenu(null);
+      const target = event.target as HTMLElement;
+      
+      if (menuRef.current && !menuRef.current.contains(target)) {
+        const clickedActionButton = Object.values(actionButtonRefs.current).some(
+          (button) => button && button.contains(target)
+        );
+        
+        if (!clickedActionButton) {
+          setActiveMenu(null);
+        }
       }
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-        const target = event.target as HTMLElement;
-        if (!target.closest(`.${styles.filterIcon}`)) {
+
+      if (showFilter && filterRef.current && !filterRef.current.contains(target)) {
+        const clickedFilterIcon = Object.values(filterIconRefs.current).some(
+          (icon) => icon && icon.contains(target)
+        );
+        
+        if (!clickedFilterIcon) {
           setShowFilter(null);
         }
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [showFilter, activeMenu]);
 
   const handleViewDetails = (user: UserDetails) => {
     saveUserDetails(user);
@@ -52,24 +66,21 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
 
   const toggleMenu = (e: React.MouseEvent, userId: string) => {
     e.stopPropagation();
-    
-    // Detect if row is near bottom of screen to flip menu upward
     const buttonRect = e.currentTarget.getBoundingClientRect();
     const screenHeight = window.innerHeight;
     
-    // If button is in the bottom 40% of the screen, open upwards
     if (buttonRect.bottom > screenHeight * 0.6) {
       setOpenUpwards(true);
     } else {
       setOpenUpwards(false);
     }
     
-    setActiveMenu(activeMenu === userId ? null : userId);
+    setActiveMenu((prev) => (prev === userId ? null : userId));
   };
 
   const toggleFilter = (e: React.MouseEvent, header: string) => {
     e.stopPropagation();
-    setShowFilter(showFilter === header ? null : header);
+    setShowFilter((prev) => (prev === header ? null : header));
   };
 
   return (
@@ -82,6 +93,9 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
                 <div className={styles.headerContent}>
                   {header} 
                   <img
+                    ref={(el) => {
+                      filterIconRefs.current[header] = el;
+                    }}
                     src={FilterIcon}
                     alt="filter"
                     className={styles.filterIcon}
@@ -124,7 +138,13 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
                   </span>
                 </td>
                 <td className={styles.actionCell}>
-                  <button className={styles.actionBtn} onClick={(e) => toggleMenu(e, user.id)}>
+                  <button 
+                    ref={(el) => {
+                      actionButtonRefs.current[user.id] = el;
+                    }}
+                    className={styles.actionBtn} 
+                    onClick={(e) => toggleMenu(e, user.id)}
+                  >
                     <img src={MoreVertIcon} alt="actions" />
                   </button>
 
@@ -139,7 +159,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onApplyFilter, onResetFilt
                       <button className={styles.blockBtn} onClick={() => setActiveMenu(null)}>
                         <img src={BlacklistIcon} alt="blacklist" /> Blacklist User
                       </button>
-                      <button  onClick={() => setActiveMenu(null)}>
+                      <button onClick={() => setActiveMenu(null)}>
                         <img src={ActivateIcon} alt="activate" /> Activate User
                       </button>
                     </div>
