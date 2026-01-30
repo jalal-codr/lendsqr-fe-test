@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/abstracts/_usersFilter.module.scss';
+import CalendarIcon from '../../assets/icons/callender.png';
 
 export interface UsersFilterValues {
   organization?: string;
@@ -18,6 +19,11 @@ interface UsersFilterProps {
 
 const UsersFilter = ({ onApply, onReset, onClose }: UsersFilterProps) => {
   const formRef = useRef<HTMLFormElement>(null);
+  
+  const [formValues, setFormValues] = useState({
+    organization: '',
+    status: ''
+  });
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -26,6 +32,13 @@ const UsersFilter = ({ onApply, onReset, onClose }: UsersFilterProps) => {
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,6 +49,7 @@ const UsersFilter = ({ onApply, onReset, onClose }: UsersFilterProps) => {
 
   const handleResetClick = () => {
     if (formRef.current) formRef.current.reset();
+    setFormValues({ organization: '', status: '' });
     onReset();
   };
 
@@ -44,8 +58,13 @@ const UsersFilter = ({ onApply, onReset, onClose }: UsersFilterProps) => {
       <form ref={formRef} onSubmit={handleSubmit}>
         <label>
           Organization
-          <select name="organization">
-            <option value="">Select</option>
+          <select 
+            name="organization" 
+            value={formValues.organization} 
+            onChange={handleSelectChange}
+            className={formValues.organization ? styles.filled : ''}
+          >
+            <option value="" disabled hidden>Select</option> 
             <option value="Lendsqr">Lendsqr</option>
             <option value="Iridere">Iridere</option>
             <option value="Lexicon">Lexicon</option>
@@ -64,7 +83,16 @@ const UsersFilter = ({ onApply, onReset, onClose }: UsersFilterProps) => {
 
         <label>
           Date
-          <input name="date" type="date" />
+          <div className={styles.dateInputContainer}>
+            <input 
+              name="date" 
+              type="text" 
+              placeholder="Date" 
+              onFocus={(e) => (e.target.type = "date")} 
+              onBlur={(e) => !e.target.value && (e.target.type = "text")} 
+            />
+            <img src={CalendarIcon} alt="calendar" className={styles.calendarIcon} />
+          </div>
         </label>
 
         <label>
@@ -74,8 +102,13 @@ const UsersFilter = ({ onApply, onReset, onClose }: UsersFilterProps) => {
 
         <label>
           Status
-          <select name="status">
-            <option value="">Select</option>
+          <select 
+            name="status" 
+            value={formValues.status} 
+            onChange={handleSelectChange}
+            className={formValues.status ? styles.filled : ''}
+          >
+            <option value="" disabled hidden>Select</option>
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
             <option value="Pending">Pending</option>

@@ -158,6 +158,10 @@ $border-color: rgba(33, 63, 125, 0.1);
   line-height: 100%;
   letter-spacing: 0px;
   text-align: center;
+  text-transform: lowercase;
+  &::first-letter {
+    text-transform: uppercase; 
+  }
 
   &.inactive { background: rgba(84, 95, 125, 0.06); color: $text-muted; }
   &.pending { background: rgba(233, 178, 0, 0.1); color: #E9B200; }
