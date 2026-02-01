@@ -34,7 +34,13 @@ A production-ready admin dashboard for managing users, built with React, TypeScr
 **Code Quality:** ESLint • TypeScript Strict Mode
 
 ## 🚀 Quick Start
+
+Follow these steps to get the project up and running:
+
 ```bash
+# Set up environment variables
+cp .env.example .env
+
 # Install dependencies
 npm install
 
@@ -46,7 +52,6 @@ npm test
 
 # Build for production
 npm run build
-```
 
 ## 📁 Project Structure
 ```
