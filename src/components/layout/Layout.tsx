@@ -17,12 +17,12 @@ const Layout = () => {
       />
 
       <div className={styles.body}>
-      {sidebarOpen && (
+        {/* Overlay - now includes onClick to close the sidebar */}
         <div
-          className={styles.overlay}
-          aria-hidden
+          className={`${styles.overlay} ${sidebarOpen ? styles.visible : ""}`}
+          onClick={closeSidebar}
+          aria-hidden="true"
         />
-      )}
 
         <Sidebar open={sidebarOpen} onClose={closeSidebar} />
         
