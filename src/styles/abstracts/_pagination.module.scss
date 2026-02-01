@@ -22,9 +22,8 @@
   align-items: center;
   gap: 10px;
 
-  @media (max-width: 480px) {
-    flex-wrap: wrap;
-    justify-content: center;
+  @media (max-width: 768px) {
+    display: none; 
   }
 
   .selectWrapper {
