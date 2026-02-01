@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import Login from "./Login";
 import { useAuth } from "../../hooks/useAuth";
-import type{ Mock } from "vitest";
+import type { Mock } from "vitest";
 
 vi.mock("../../hooks/useAuth", () => ({
   useAuth: vi.fn(),
@@ -39,30 +39,31 @@ describe("Login Component", () => {
     expect(screen.getByAltText(/lendsqr/i)).toBeInTheDocument();
   });
 
-    it("should show an error if the email format is invalid", async () => {
-        render(
-        <BrowserRouter>
-            <Login />
-        </BrowserRouter>
-        );
+  it("should show an error if the email format is invalid", async () => {
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
 
-        fireEvent.change(screen.getByPlaceholderText(/email/i), {
-        target: { value: "not-an-email" },
-        });
-        fireEvent.change(screen.getByPlaceholderText(/password/i), {
-        target: { value: "password123" },
-        });
-
-        const form = screen.getByLabelText("login-form");
-        fireEvent.submit(form);
-
-        // Check for the specific validation message
-        const errorMsg = await screen.findByText(/please enter a valid email address/i);
-        expect(errorMsg).toBeInTheDocument();
-        
-        // Ensure the API wasn't called
-        expect(mockSignIn).not.toHaveBeenCalled();
+    const emailInput = screen.getByPlaceholderText(/email/i) as HTMLInputElement;
+    
+    fireEvent.change(emailInput, {
+      target: { value: "not-an-email" },
     });
+    fireEvent.change(screen.getByPlaceholderText(/password/i), {
+      target: { value: "password123" },
+    });
+
+    const form = screen.getByLabelText("login-form");
+    fireEvent.submit(form);
+
+    // Because you use setCustomValidity, we check the input's internal state
+    expect(emailInput.validationMessage).toMatch(/please enter a valid email address/i);
+    
+    // Ensure the API wasn't called
+    expect(mockSignIn).not.toHaveBeenCalled();
+  });
 
   it("should show an error if fields are empty and form is submitted", async () => {
     render(
@@ -71,12 +72,13 @@ describe("Login Component", () => {
       </BrowserRouter>
     );
 
+    const emailInput = screen.getByPlaceholderText(/email/i) as HTMLInputElement;
     const form = screen.getByLabelText("login-form");
+    
     fireEvent.submit(form);
 
-    const errorMsg = await screen.findByText(/all fields are required/i);
-    expect(errorMsg).toBeInTheDocument();
-    
+    // native 'required' validation message
+    expect(emailInput.validity.valueMissing).toBe(true);
     expect(mockSignIn).not.toHaveBeenCalled();
   });
 
@@ -90,9 +92,7 @@ describe("Login Component", () => {
     const passwordInput = screen.getByPlaceholderText(/password/i);
     const toggleBtn = screen.getByRole("button", { name: /show/i });
 
-
     expect(passwordInput).toHaveAttribute("type", "password");
-
 
     fireEvent.click(toggleBtn);
     expect(passwordInput).toHaveAttribute("type", "text");

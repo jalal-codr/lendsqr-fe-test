@@ -58,7 +58,7 @@ const Login = () => {
           <h1>Welcome!</h1>
           <p>Enter details to login.</p>
 
-          <form onSubmit={handleSubmit} noValidate={false}>
+          <form onSubmit={handleSubmit} aria-label="login-form" noValidate={false}>
             <input
               name="email"
               type="email"
