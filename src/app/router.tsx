@@ -5,10 +5,11 @@ import UserDetails from "../features/users/UserDetails";
 import Layout from "../components/layout/Layout";
 import ErrorPage from "../features/error/ErrorPage";
 import ProtectedRoute from "./ProtectedRoute";
+import { ROUTES } from "../constants/routes";
 
 export const router = createBrowserRouter([
   {
-    path: "/login",
+    path: ROUTES.LOGIN,
     element: <Login />,
     errorElement: <ErrorPage />,
   },
@@ -17,12 +18,21 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
+        path: ROUTES.DASHBOARD,
         element: <Layout />,
         children: [
-          { path: "/", element: <div>Dashboard</div> },
-          { path: "users", element: <Users /> },
-          { path: "users/:id", element: <UserDetails /> },
+          { 
+            index: true, 
+            element: <div>Dashboard</div> 
+          },
+          { 
+            path: ROUTES.USERS.replace("/", ""),
+            element: <Users /> 
+          },
+          { 
+            path: ROUTES.USER_DETAILS.replace("/", ""),
+            element: <UserDetails /> 
+          },
         ],
       },
     ],
