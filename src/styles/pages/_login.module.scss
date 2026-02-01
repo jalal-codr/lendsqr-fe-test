@@ -3,7 +3,6 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
   background: #ffffff;
 
   @media (max-width: 900px) {
