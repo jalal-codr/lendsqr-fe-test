@@ -11,4 +11,4 @@ export const ENV = {
   MOCKAROO_URL: getEnv('VITE_MOCKAROO_API_URL'),
   MOCKAROO_API_KEY: getEnv('VITE_MOCKAROO_API_KEY'),
   TIMEOUT: 10_000,
-} as const;
+}

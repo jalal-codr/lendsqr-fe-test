@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import type { UserDetails } from "./users.types";
-import { ENV } from '../../configs/config';
+import { ENV } from '../../configs/env';
 
 const MOCKAROO_URL = `${ENV.MOCKAROO_URL}?key=${ENV.MOCKAROO_API_KEY}`;
 
