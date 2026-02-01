@@ -13,27 +13,34 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) {
-      setError("All fields are required");
-      return;
-    }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); 
+    
+    const form = e.currentTarget;
+    const emailInput = form.elements.namedItem("email") as HTMLInputElement;
+    const passwordInput = form.elements.namedItem("password") as HTMLInputElement;
+
+    // 1. Manual Email Regex Check
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address");
+    if (email !== "" && !emailRegex.test(email)) {
+      emailInput.setCustomValidity("Please enter a valid email address.");
+      emailInput.reportValidity();
       return;
     }
-    setError("");
-    setLoading(true);
 
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    setLoading(true);
     try {
       await signIn(email, password);
       navigate("/users");
     } catch {
-      setError("Invalid email or password");
+      passwordInput.setCustomValidity("Invalid email or password");
+      passwordInput.reportValidity();
     } finally {
       setLoading(false);
     }
@@ -41,40 +48,42 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      {/* LEFT */}
       <div className={styles.left}>
         <img src={logo} alt="Lendsqr" className={styles.logo} />
-        <img
-          src={illustration}
-          alt="Login illustration"
-          className={styles.illustration}
-        />
+        <img src={illustration} alt="Login illustration" className={styles.illustration} />
       </div>
 
-      {/* RIGHT */}
       <div className={styles.right}>
         <div className={styles.formWrapper}>
           <h1>Welcome!</h1>
           <p>Enter details to login.</p>
 
-          <form onSubmit={handleSubmit} aria-label="login-form">
+          <form onSubmit={handleSubmit} noValidate={false}>
             <input
+              name="email"
               type="email"
               required
               placeholder="Email"
               className={styles.input}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                e.target.setCustomValidity("");
+              }}
             />
 
             <div className={styles.passwordWrapper}>
               <input
+                name="password"
                 type={showPassword ? "text" : "password"}
                 required
                 placeholder="Password"
                 className={styles.input}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  e.target.setCustomValidity("");
+                }}
               />
               <button
                 type="button"
@@ -84,16 +93,12 @@ const Login = () => {
               </button>
             </div>
 
-            <a href="#" className={styles.forgot}>
-              FORGOT PASSWORD?
-            </a>
+            <a href="#" className={styles.forgot}>FORGOT PASSWORD?</a>
 
-            <button type="submit" className={styles.loginBtn}>
+            <button type="submit" className={styles.loginBtn} disabled={loading}>
               {loading ? "LOADING..." : "LOG IN"}
             </button>
           </form>
-
-          {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
       </div>
     </div>

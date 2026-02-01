@@ -2,13 +2,16 @@
   padding: 0px 5%;
   background-color: #FBFBFB;
   min-height: 100vh;
+  overflow-x: hidden;
   
   .pageTitle {
     font-weight: 500;
     font-size: 24px;
-    line-height: 28px;
+    line-height: 100%;
     color: #213F7D;
     margin-bottom: 40px;
+    font-family: Work Sans;
+
 
     @media (max-width: 768px) {
       font-size: 20px;

@@ -11,12 +11,14 @@
   flex: 1;
   height: calc(100vh - 100px); 
   position: relative;
+  overflow-x: hidden;
 }
 
 .content {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   background-color: #fbfbfb;
 
   @media (max-width: 768px) {
