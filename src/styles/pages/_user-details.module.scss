@@ -3,20 +3,19 @@
   background: #fbfbfb;
   position: relative;
 }
+
 .backBtn {
   width: 152px;
   height: 30px;
   opacity: 1;
   margin-top: 20px; 
   margin-left: 0; 
-
   font-family: 'Work Sans', sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 100%;
   letter-spacing: 0px;
   color: #545f7d; 
-  
   text-decoration: none;
   display: flex;
   align-items: center; 
@@ -24,8 +23,8 @@
   cursor: pointer;
 
   img {
-    height: 16px; 
-    width: auto;
+    height: 10px; 
+    width: 25px;
     display: block;
   }
 
@@ -49,19 +48,24 @@ p {
 
 .headerRow {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: nowrap;
   margin-bottom: 30px;
   position: relative;
   z-index: 1;
 
   h1 {
+    margin: 0;
+    display: flex;  
+    align-items: center;  
     color: #213f7d;
     font-family: 'Work Sans', sans-serif;
     font-weight: 500;
     font-size: 22px;
-    line-height: 100%;
-    letter-spacing: 0px;
+    line-height: 1;      
+    white-space: nowrap;
   }
 }
 
@@ -72,42 +76,33 @@ span {
   line-height: 100%;
   letter-spacing: 0px;
   text-transform: uppercase;
-
 }
 
 .actions {
   display: flex;
+  align-items: center; 
   gap: 20px;
 }
 
 .blacklist,
 .activate {
-  padding: 12px 24px;
+  height: 40px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
   border-radius: 8px;
   font-weight: 600;
   font-family: 'Work Sans', sans-serif;
   background: #fff;
-  border: 1px solid #39cdcc;
-  color: #39cdcc;
   cursor: pointer;
   transition: all 0.2s ease;
-
-  &:hover {
-    background: #39cdcc;
-    color: #ffffff;
-  }
+  line-height: 1;  
 }
 
 .blacklist {
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-family: 'Work Sans', sans-serif;
-  background: #fff;
   border: 1px solid #e4033b;
   color: #e4033b;
-  cursor: pointer;
-  transition: all 0.2s ease;
 
   &:hover {
     background: #e4033b;
@@ -118,6 +113,11 @@ span {
 .activate {
   border: 1px solid #39cdcc;
   color: #39cdcc;
+
+  &:hover {
+    background: #39cdcc;
+    color: #ffffff;
+  }
 }
 
 .userHeaderTabs {

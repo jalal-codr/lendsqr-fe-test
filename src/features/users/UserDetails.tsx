@@ -14,7 +14,7 @@ const UserDetails = () => {
     return (
       <div className={styles.wrapper}>
       <Link to="/users" className={styles.backBtn}>
-        <img src={BackArrow} alt="Back" />
+        <img className={styles.backLogo} src={BackArrow} alt="Back" />
         <span>Back to Users</span>
       </Link>
         <div className={styles.detailsCard}>
