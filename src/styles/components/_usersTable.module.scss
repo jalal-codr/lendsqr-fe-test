@@ -22,7 +22,8 @@ $border-color: rgba(33, 63, 125, 0.1);
   &::-webkit-scrollbar-thumb { background-color: rgba(33, 63, 125, 0.2); border-radius: 4px; }
 
   @media (max-width: 768px) {
-    padding: 20px 16px 0 16px;
+    max-width: 100%;
+
   }
 }
 
